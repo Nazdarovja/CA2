@@ -54,3 +54,4 @@ persistencetest.xml
 
 
 # End of https://www.gitignore.io/api/macos,windows
+/target/
