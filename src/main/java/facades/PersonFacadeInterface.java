@@ -14,15 +14,15 @@ import java.util.List;
  */
 public interface PersonFacadeInterface {
     //POST 
-    public PersonEntity createPersonJSON(String message);
+    public PersonEntity createPerson(String message);
     //GET
-    public PersonEntity getPersonJSON(Long id);
+    public PersonEntity getPerson(Long id);
     //PUT a person id as a URL parameter, and updates with given JSON (message)
-    public PersonEntity updatePersonJSON(Long id, String message);
+    public PersonEntity updatePerson(Long id, String message);
     //DELETE (returns deleted PersonEntity, for whatever reason)
-    public PersonEntity deletePersonJSON(Long id);
-    public PersonEntity getPersonByPhoneNumberJSON(Integer number);
-    public List<PersonEntity> getAllPersonsByHobbyJSON(String hobby);
+    public PersonEntity deletePerson(Long id);
+    public PersonEntity getPersonByPhoneNumber(Integer number);
+    public List<PersonEntity> getAllPersonsByHobby(String hobby);
     public List<PersonEntity> getAllPersonsByCity(String city);
     public List<PersonEntity> getAllPersonsByStreet(String street);
     public Integer getPersonCountByHobby(String hobby);

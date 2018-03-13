@@ -10,5 +10,5 @@ package DTO;
  * @author Stanislav
  */
 public interface JSONDTO<T> {
-    public T fromMessage();
+    public T toInternal();
 }
