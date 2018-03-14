@@ -5,9 +5,7 @@
  */
 package facades;
 
-import DTO.PersonEntityDTO;
 import entities.CompanyEntity;
-import entities.PersonEntity;
 import facades.interfaces.CompanyFacadeInterface;
 import java.util.List;
 import facades.interfaces.CRUDInterface;
@@ -30,23 +28,32 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
         Query query = em.createQuery("SELECT p from PersonEntity p JOIN p.phones ph WHERE ph.number = :number");
         query.setParameter("number", phoneNumber);
         return (CompanyEntity) query.getSingleResult();
+        //TODO ErrorHandling
     }
 
     @Override
     public int getCompanyCountByZipCode(String zipcode) {
-        Query query = (Query) em.createQuery("SELECT count(c.id) from CompanyEntity c WHERE c.address.cityInfo.zipecode = :zipcode");
-        query.setParameter("number", phoneNumber);
-        return (CompanyEntity) query.getSingleResult();
+        Query query = em.createQuery("SELECT count(c.id) from CompanyEntity c WHERE c.address.cityInfo.zipCode = :zipcode");
+        query.setParameter("zipcode", zipcode);
+        return (int) query.getSingleResult();
+        //TODO ErrorHandling
+
     }
 
     @Override
     public List<CompanyEntity> getCompaniesByMarketValueAbove(Long marketValue) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Query query = em.createQuery("SELECT c from CompanyEntity c WHERE c.marketValue > :marketValue");
+        query.setParameter("marketValue", marketValue);
+        return query.getResultList();
+        //TODO ErrorHandling
     }
 
     @Override
     public int getCompanyCountByNumEmployeesBelow(Integer numEmployees) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Query query = em.createQuery("SELECT count(c.id) from CompanyEntity c WHERE c.numEmployees < :numEmployees");
+        query.setParameter("numEmployees", numEmployees);
+        return (int) query.getSingleResult();
+        //TODO ErrorHandling
     }
 
 
