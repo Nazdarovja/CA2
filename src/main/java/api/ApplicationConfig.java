@@ -31,6 +31,7 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(api.testdataRessource.class);
+        resources.add(errors.code404.NotFoundExceptionMapper.class);
     }
 
 }
