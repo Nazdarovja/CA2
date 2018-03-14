@@ -27,12 +27,16 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
     
     @Override
     public CompanyEntity getCompanyByPhoneNumberJSON(Integer phoneNumber) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Query query = em.createQuery("SELECT p from PersonEntity p JOIN p.phones ph WHERE ph.number = :number");
+        query.setParameter("number", phoneNumber);
+        return (CompanyEntity) query.getSingleResult();
     }
 
     @Override
     public int getCompanyCountByZipCode(String zipcode) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Query query = (Query) em.createQuery("SELECT count(c.id) from CompanyEntity c WHERE c.address.cityInfo.zipecode = :zipcode");
+        query.setParameter("number", phoneNumber);
+        return (CompanyEntity) query.getSingleResult();
     }
 
     @Override

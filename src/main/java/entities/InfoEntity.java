@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 /**
@@ -34,6 +35,9 @@ public abstract class InfoEntity implements Serializable {
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "infoentityid")
     private List<PhoneEntity> phones = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "ADDRESS_ID", referencedColumnName = "id")
+    private AddressEntity address;
     
     public InfoEntity() {
         
