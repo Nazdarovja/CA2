@@ -5,16 +5,14 @@
  */
 package tests;
 
-import DTO.CompanyEntityDTO;
 import com.google.gson.Gson;
 import entities.AddressEntity;
 import entities.CompanyEntity;
+import entities.HobbyEntity;
 import entities.InfoEntity;
 import entities.PersonEntity;
 import entities.PhoneEntity;
 import facades.TestDataFacade;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -31,7 +29,7 @@ public class Generator {
     //RANDOM TEST DATA// 
     ////////////////////
     //ADDRESS ENTITY
-    String[] street = {"Algade 2", "Rådhuspladsen 8", "Frederiksberg Allé 52a", "Roskildevej 13", "Ballerup Byvej 1"};
+    String[] street = {"Algade 2", "Raadhuspladsen 8", "Frederiksberg Alle 52a", "Roskildevej 13", "Ballerup Byvej 1"};
     String[] additionalInfo = {"Building 1", "Building 2", "Building 3", "Building 4", "Building 5"};
     //CITY ENTITY ?
 
@@ -52,6 +50,16 @@ public class Generator {
     String[] phonedescription = {"fastnet", "privat", "public", "mobil", "midlertidigt"};
     int[] phonenumbers = {12345678, 87654321, 11223344, 22334455, 33445566};
 
+    //HOBBY ENTITY
+    String[] hobbynames = {"fodbold", "håndbold", "floorball", "gaming", "windsurfing"};
+    String[] hobbydescription = {"holdsport", "teamsport", "beskrivelse her", "enkeltperson", "gruppesport"};
+
+    //CITYINFO / ZIPCODE
+    String[] zipcode = {"2750", "3050", "3450", "2730", "1000"};
+    
+    //INFOENTITY
+    String[] dtype = {"PersonEntity","CompanyEntity"};
+    
     private int getRndIntValue(int[] array) {
         int index = r.nextInt(array.length);
         return array[index];
@@ -60,6 +68,11 @@ public class Generator {
     private Long getRndLongValue(Long[] array) {
         int index = r.nextInt(array.length);
         return array[index];
+    }
+
+    public int getRndID(int range) {
+        int res = r.nextInt(range) + 1;
+        return res;
     }
 
     private String getRndStringValue(String[] array) {
@@ -79,21 +92,27 @@ public class Generator {
         return first + second;
     }
 
-    private String sqlifyInfoEntity(InfoEntity temp) {
-        String first = "INSERT INTO INFOENTITY (EMAIL) VALUES ('";
-        String second = temp.getEmail() + "');\n";
+    private String sqlifyInfoEntity(String dtype, InfoEntity temp, int samplesize) {
+        String first = "INSERT INTO INFOENTITY (DTYPE, ID, EMAIL) VALUES ('";
+        String second = dtype + "', '" + getRndID(samplesize) + "', '" + temp.getEmail() + "');\n";
         return first + second;
     }
 
     private String sqlifyAddressEntity(AddressEntity temp) {
-        String first = "INSERT INTO ADDRESSENTITY (STREET, ADDITIONALINFO) VALUES ('";
-        String second = temp.getStreet() + "', '" + temp.getAdditionalInfo() + "');\n";
+        String first = "INSERT INTO ADDRESSENTITY (ZIPCODE, STREET, ADDITIONALINFO) VALUES ('";
+        String second = getRndStringValue(zipcode) + "', '" + temp.getStreet() + "', '" + temp.getAdditionalInfo() + "');\n";
         return first + second;
     }
 
     private String sqlifyPhoneEntity(PhoneEntity temp) {
         String first = "INSERT INTO PHONEENTITY (NUMBER, DESCRIPTION) VALUES ('";
-        String second = temp.getNumber()+"', '" + temp.getDescription() + "');\n";
+        String second = temp.getNumber() + "', '" + temp.getDescription() + "');\n";
+        return first + second;
+    }
+
+    private String sqlifyHobbyEntity(HobbyEntity temp) {
+        String first = "INSERT INTO HOBBYENTITY (DESCRIPTION, NAME) VALUES ('";
+        String second = temp.getDescription() + "', '" + temp.getName() + "');\n";
         return first + second;
     }
 
@@ -121,11 +140,11 @@ public class Generator {
         return sqlList;
     }
 
-    public String generateInfoEntityEntity(int samplesToGenerate) {
+    public String generateInfoEntity(int samplesToGenerate) {
         String sqlList = "";
         while (samplesToGenerate > 0) {
             InfoEntity temp = tdf.createInfoEntity(getRndStringValue(email));
-            sqlList += sqlifyInfoEntity(temp);
+            sqlList += sqlifyInfoEntity(getRndStringValue(dtype), temp, samplesToGenerate);
             samplesToGenerate--;
         }
         return sqlList;
@@ -151,10 +170,14 @@ public class Generator {
         return sqlList;
     }
 
-    public static void main(String[] args) {
-        Generator g = new Generator();
-        System.out.println(g.generateCompanyEntity(3));
-        System.out.println(g.generatePersonEntity(3));
+    public String generateHobbyEntity(int samplesToGenerate) {
+        String sqlList = "";
+        while (samplesToGenerate > 0) {
+            HobbyEntity temp = tdf.createHobbyEntity(getRndStringValue(hobbydescription), getRndStringValue(hobbynames));
+            sqlList += sqlifyHobbyEntity(temp);
+            samplesToGenerate--;
+        }
+        return sqlList;
     }
 
 }

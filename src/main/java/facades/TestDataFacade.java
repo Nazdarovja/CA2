@@ -7,6 +7,7 @@ package facades;
 
 import entities.AddressEntity;
 import entities.CompanyEntity;
+import entities.HobbyEntity;
 import entities.InfoEntity;
 import entities.PersonEntity;
 import entities.PhoneEntity;
@@ -37,6 +38,9 @@ public class TestDataFacade {
 
     public PhoneEntity createPhoneEntity(int number, String description) {
         return new PhoneEntity(number, description);
+    }
+    public HobbyEntity createHobbyEntity(String name, String description) {
+        return new HobbyEntity(name, description);
     }
 
 }

@@ -23,7 +23,8 @@ import javax.ws.rs.core.MediaType;
 public class testdataRessource {
 
     Generator generator = new Generator();
-
+    
+    
     @Context
     private UriInfo context;
 
@@ -51,7 +52,7 @@ public class testdataRessource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getInfoEntityTestData(@PathParam("samples") Integer samples) {
-        return generator.generateInfoEntityEntity(samples);
+        return generator.generateInfoEntity(samples);
     }
 
     @Path("/address/{samples}")
@@ -60,11 +61,32 @@ public class testdataRessource {
     public String getAddressTestData(@PathParam("samples") Integer samples) {
         return generator.generateAddressEntity(samples);
     }
+
     @Path("/phone/{samples}")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getPhoneTestData(@PathParam("samples") Integer samples) {
         return generator.generatePhoneEntity(samples);
+    }
+
+    @Path("/hobby/{samples}")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getHobbyTestData(@PathParam("samples") Integer samples) {
+        return generator.generateHobbyEntity(samples);
+    }
+
+    @Path("/sql/{samples}")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getTestData(@PathParam("samples") Integer samples) {
+        
+        String sql = "";
+        sql += generator.generateAddressEntity(1);
+        sql += generator.generateInfoEntity(1);
+        sql += generator.generatePhoneEntity(1);
+        sql += generator.generateCompanyEntity(1);
+        return sql;
     }
 
 }
