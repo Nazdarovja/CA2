@@ -36,7 +36,7 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
     public int getCompanyCountByZipCode(String zipcode) {
         Query query = (Query) em.createQuery("SELECT count(c.id) from CompanyEntity c WHERE c.address.cityInfo.zipecode = :zipcode");
         query.setParameter("number", phoneNumber);
-        return (CompanyEntity) query.getSingleResult();
+        return (int) query.getSingleResult();
     }
 
     @Override
