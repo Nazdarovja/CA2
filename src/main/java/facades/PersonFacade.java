@@ -118,15 +118,27 @@ public class PersonFacade implements PersonFacadeInterface {
     }
 
     @Override
-    public List<PersonEntity> getAllPersonsByStreet(String street
-    ) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<PersonEntity> getAllPersonsByStreet(String street) {
+        Query q = em.createQuery("SELECT p FROM PersonEntity p WHERE p.address.street = :street");
+        q.setParameter("street", street);
+        List<PersonEntity> persons = (List<PersonEntity>) q.getResultList();
+        if (persons == null) {
+            //TODO throw Exception
+        }
+        return persons;
+        //TODO Add Catchblock to catch all RuntimeExceptions from em (convert to appropriate ex)
     }
 
     @Override
-    public Integer getPersonCountByHobby(String hobby
-    ) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Integer getPersonCountByHobby(String hobby) {
+        Integer res = 0;
+        Query q = em.createQuery("SELECT COUNT(p.id) FROM PersonEntity p JOIN p.hobbies h WHERE h.name = :hobby");
+        q.setParameter("hobby", hobby);
+        res = (Integer) q.getSingleResult();
+        if(res == null){
+            //TODO Throw approp. Exception
+        }
+        return res;
     }
 
 }
