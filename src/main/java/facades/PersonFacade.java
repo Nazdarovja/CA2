@@ -9,6 +9,7 @@ import DTO.PersonEntityDTO;
 import entities.PersonEntity;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import persistence.EntityManagerControl;
 
 /**
@@ -81,17 +82,39 @@ public class PersonFacade implements PersonFacadeInterface {
 
     @Override
     public PersonEntity getPersonByPhoneNumber(Integer number) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        Query q = em.createQuery("SELECT p FROM PersonEntity p JOIN p.phones ph WHERE ph.number = :number");
+        q.setParameter("number", number);
+        PersonEntity p = (PersonEntity) q.getSingleResult();
+        if (p == null) {
+            //TODO throw Exception
+        }
+        return p;
+        //TODO Add Catchblock to catch all RuntimeExceptions from em (convert to appropriate ex)
     }
 
     @Override
     public List<PersonEntity> getAllPersonsByHobby(String hobby) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Query q = em.createQuery("SELECT p FROM PersonEntity p JOIN p.hobbies h WHERE h.name = :hobby");
+        q.setParameter("hobby", hobby);
+        List<PersonEntity> persons = (List<PersonEntity>) q.getResultList();
+        if (persons == null) {
+            //TODO throw Exception
+        }
+        return persons;
+        //TODO Add Catchblock to catch all RuntimeExceptions from em (convert to appropriate ex)
     }
 
     @Override
     public List<PersonEntity> getAllPersonsByCity(String city) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Query q = em.createQuery("SELECT p FROM PersonEntity p WHERE p.address.cityInfo.city = :city");
+        q.setParameter("city", city);
+        List<PersonEntity> persons = (List<PersonEntity>) q.getResultList();
+        if (persons == null) {
+            //TODO throw Exception
+        }
+        return persons;
+        //TODO Add Catchblock to catch all RuntimeExceptions from em (convert to appropriate ex)
     }
 
     @Override
@@ -105,5 +128,5 @@ public class PersonFacade implements PersonFacadeInterface {
     ) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

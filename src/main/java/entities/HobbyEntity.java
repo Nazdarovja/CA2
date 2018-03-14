@@ -11,8 +11,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
@@ -25,8 +23,6 @@ public class HobbyEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String name;
     private String description;
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER,  mappedBy = "hobbies")
@@ -65,18 +61,11 @@ public class HobbyEntity implements Serializable {
         this.description = description;
     }
     
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (name != null ? name.hashCode() : 0);
         return hash;
     }
 
@@ -87,7 +76,7 @@ public class HobbyEntity implements Serializable {
             return false;
         }
         HobbyEntity other = (HobbyEntity) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.name == null && other.name != null) || (this.name != null && !this.name.equals(other.name))) {
             return false;
         }
         return true;
@@ -95,7 +84,8 @@ public class HobbyEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.HobbyEntity[ id=" + id + " ]";
+        return "HobbyEntity{" + "name=" + name + ", description=" + description + '}';
     }
+
     
 }
