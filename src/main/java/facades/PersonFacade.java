@@ -21,7 +21,6 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
 
     EntityManagerControl emc = new EntityManagerControl("persistence");
     EntityManager em = emc.getEm();
-    DTOFacade dto = new DTOFacade();
 
     // ------- CRUD -------- CRUD -------- CRUD -------- CRUD --------
     // CREATE
