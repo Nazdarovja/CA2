@@ -18,22 +18,22 @@ public class PhoneEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    private Integer number;
+    private Long number;
     private String description;
 
     public PhoneEntity() {
     }
     
-    public PhoneEntity(int number, String description) {
+    public PhoneEntity(Long number, String description) {
         this.number = number;
         this.description = description;
     }
 
-    public Integer getNumber() {
+    public Long getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(Long number) {
         this.number = number;
     }
 
@@ -45,11 +45,11 @@ public class PhoneEntity implements Serializable {
         this.description = description;
     }
     
-    public int getId() {
+    public Long getId() {
         return number;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.number = id;
     }
 
