@@ -15,7 +15,7 @@ import persistence.EntityManagerControl;
  *
  * @author Stanislav
  */
-public class PersonFacade implements PersonFacadeInterface {
+public class PersonFacade implements PersonFacadeInterface, CRUDFacade<PersonEntity> {
 
     EntityManagerControl emc = new EntityManagerControl("persistence");
     EntityManager em = emc.getEm();
@@ -105,5 +105,42 @@ public class PersonFacade implements PersonFacadeInterface {
     ) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public PersonEntity create(PersonEntity object) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public PersonEntity read() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<PersonEntity> readAll() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public PersonEntity update(Long id, PersonEntity object) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public PersonEntity update(String id, PersonEntity object) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public PersonEntity delete(Long id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public PersonEntity delete(String id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+ 
     
 }
