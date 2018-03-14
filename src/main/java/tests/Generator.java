@@ -54,7 +54,7 @@ public class Generator {
     }
 
     private String sqlify(CompanyEntity temp, int counter){
-        String first = "INSERT INTO COMPANYENTITY VALUES ('";
+        String first = "INSERT INTO COMPANYENTITY (ID, NAME, DESCRIPTION, CVR, NUMEMPLOYEES, MARKETVALUE) VALUES ('";
         String second = counter + "', '" + temp.getName() + "', '" + temp.getDescription() + "', '" + temp.getCvr()+ "', '" + temp.getNumEmployees() + "', '" + temp.getMarketValue() + "');\n";
         return first+second;
     }
