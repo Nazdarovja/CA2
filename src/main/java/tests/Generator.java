@@ -93,7 +93,7 @@ public class Generator {
     }
 
     private String sqlifyInfoEntity(String dtype, InfoEntity temp, int samplesize) {
-        String first = "INSERT INTO INFOENTITY (DTYPE, ID, EMAIL) VALUES ('";
+        String first = "INSERT INTO INFOENTITY (DTYPE, ADDRESSID, EMAIL) VALUES ('";
         String second = dtype + "', '" + getRndID(samplesize) + "', '" + temp.getEmail() + "');\n";
         return first + second;
     }
@@ -131,32 +131,32 @@ public class Generator {
     public String generatePersonEntity(int samplesToGenerate) {
         String sqlList = "";
         int counter = 1;
-        while (samplesToGenerate > 0) {
+//        while (samplesToGenerate > 0) {
             PersonEntity temp = tdf.createPersonEntity(getRndStringValue(firstName), getRndStringValue(lastName), getRndStringValue(email));
             sqlList += sqlifyPersonEntity(temp, counter);
-            samplesToGenerate--;
+//            samplesToGenerate--;
             counter++;
-        }
+//        }
         return sqlList;
     }
 
     public String generateInfoEntity(int samplesToGenerate) {
         String sqlList = "";
-        while (samplesToGenerate > 0) {
+//        while (samplesToGenerate > 0) {
             InfoEntity temp = tdf.createInfoEntity(getRndStringValue(email));
             sqlList += sqlifyInfoEntity(getRndStringValue(dtype), temp, samplesToGenerate);
-            samplesToGenerate--;
-        }
+//            samplesToGenerate--;
+//        }
         return sqlList;
     }
 
     public String generateAddressEntity(int samplesToGenerate) {
         String sqlList = "";
-        while (samplesToGenerate > 0) {
+//        while (samplesToGenerate > 0) {
             AddressEntity temp = tdf.createAddressEntity(getRndStringValue(street), getRndStringValue(additionalInfo));
             sqlList += sqlifyAddressEntity(temp);
-            samplesToGenerate--;
-        }
+//            samplesToGenerate--;
+//        }
         return sqlList;
     }
 

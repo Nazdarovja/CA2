@@ -23,8 +23,7 @@ import javax.ws.rs.core.MediaType;
 public class testdataRessource {
 
     Generator generator = new Generator();
-    
-    
+
     @Context
     private UriInfo context;
 
@@ -80,12 +79,22 @@ public class testdataRessource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getTestData(@PathParam("samples") Integer samples) {
+ 
         
-        String sql = "";
-        sql += generator.generateAddressEntity(1);
-        sql += generator.generateInfoEntity(1);
-        sql += generator.generatePhoneEntity(1);
-        sql += generator.generateCompanyEntity(1);
+        //skal gøres via DTO
+        String sql = "INSERT INTO CITYINFOENTITY (ZIPCODE, CITY) VALUES ('2750', 'Ballerup');\n"
+                + "INSERT INTO CITYINFOENTITY (ZIPCODE, CITY) VALUES ('3050', 'Humlebæk');\n"
+                + "INSERT INTO CITYINFOENTITY (ZIPCODE, CITY) VALUES ('3450', 'Allerød');\n"
+                + "INSERT INTO CITYINFOENTITY (ZIPCODE, CITY) VALUES ('2730', 'Herlev');\n"
+                + "INSERT INTO CITYINFOENTITY (ZIPCODE, CITY) VALUES ('1000', 'København K');\n";
+
+        //FOR LOOP PÅ SAMPLES
+        for (int i = 0; i < samples; i++) {
+            sql += generator.generateAddressEntity(samples);
+            sql += generator.generateInfoEntity(samples);
+//            sql += generator.generatePhoneEntity(1);
+//            sql += generator.generateCompanyEntity(1);
+        }
         return sql;
     }
 
