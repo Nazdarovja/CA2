@@ -36,9 +36,29 @@ public class testdataRessource {
     @Path("/company/{samples}")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String getTestData(@PathParam("samples") Integer samples) {
+    public String getCompanyTestData(@PathParam("samples") Integer samples) {
         return generator.generateCompanyEntity(samples);
     }
 
+    @Path("/person/{samples}")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getPersonTestData(@PathParam("samples") Integer samples) {
+        return generator.generatePersonEntity(samples);
+    }
+
+    @Path("/infoentity/{samples}")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getInfoEntityTestData(@PathParam("samples") Integer samples) {
+        return generator.generateInfoEntityEntity(samples);
+    }
+
+    @Path("/address/{samples}")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getAddressTestData(@PathParam("samples") Integer samples) {
+        return generator.generateAddressEntity(samples);
+    }
 
 }
