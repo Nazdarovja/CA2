@@ -18,8 +18,12 @@ import entities.PhoneEntity;
  */
 public class TestDataFacade {
 
-    public CompanyEntity createCompanyEntity(String name, String description, int cvr, int numEmployees, long marketValue, String email) {
-        return new CompanyEntity(name, description, cvr, numEmployees, marketValue, email);
+//    public CompanyEntity createCompanyEntity(String name, String description, int cvr, int numEmployees, long marketValue, String email) {
+//        return new CompanyEntity(name, description, cvr, numEmployees, marketValue, email);
+//    }
+    //test
+    public CompanyEntity createCompanyEntity(String name, String description, int cvr, int numEmployees, long marketValue) {
+        return new CompanyEntity(name, description, cvr, numEmployees, marketValue);
     }
 
     public PersonEntity createPersonEntity(String firstName, String lastName, String email) {

@@ -88,13 +88,10 @@ public class testdataRessource {
                 + "INSERT INTO CITYINFOENTITY (ZIPCODE, CITY) VALUES ('2730', 'Herlev');\n"
                 + "INSERT INTO CITYINFOENTITY (ZIPCODE, CITY) VALUES ('1000', 'København K');\n";
 
-        //FOR LOOP PÅ SAMPLES
-        for (int i = 0; i < samples; i++) {
             sql += generator.generateAddressEntity(samples);
             sql += generator.generateInfoEntity(samples);
-//            sql += generator.generatePhoneEntity(1);
-//            sql += generator.generateCompanyEntity(1);
-        }
+            sql += generator.generatePhoneEntity(samples);
+            sql += generator.generateCompanyEntity(samples);
         return sql;
     }
 
