@@ -7,6 +7,7 @@ package facades;
 
 import DTO.JSONDTO;
 import com.google.gson.Gson;
+import java.util.List;
 
 /**
  *
@@ -17,19 +18,19 @@ public class DTOFacade {
     private Gson gson = new Gson();
 
     //This seemingly silly wrapper ensures that the object is a JSONDTO, proving that we intend to serialize it
-    public String messagetoJson(JSONDTO jm) {
+    public String DTOtoJson(JSONDTO jm) {
         return gson.toJson(jm);
     }
 
-    public String objectToJson(Object obj){
-        return gson.toJson(obj);
+    public String DTOListToJson(List<JSONDTO> listDTO){
+        return gson.toJson(listDTO);
     }
     
-    public <T extends JSONDTO> T jsonToMessage(String json, Class<T> c) {
+    public <T extends JSONDTO> T jsonToDTO(String json, Class<T> c) {
         return gson.fromJson(json, c);
     }
 
     public <T2, T extends JSONDTO<T2>> T2 fromJson(String json, Class<T> DTOClass) {
-        return jsonToMessage(json, DTOClass).toInternal();
+        return jsonToDTO(json, DTOClass).toInternal();
     }
 }
