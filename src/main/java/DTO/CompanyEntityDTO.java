@@ -28,7 +28,7 @@ public class CompanyEntityDTO implements JSONDTO<CompanyEntity> {
     }
 
     @Override
-    public CompanyEntity fromMessage() {
+    public CompanyEntity toInternal() {
         return new CompanyEntity(name, description, cvr, numEmployees, marketValue, name);
     }
 
