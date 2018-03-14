@@ -9,6 +9,7 @@ import entities.AddressEntity;
 import entities.CompanyEntity;
 import entities.InfoEntity;
 import entities.PersonEntity;
+import entities.PhoneEntity;
 
 /**
  *
@@ -32,6 +33,10 @@ public class TestDataFacade {
 
     public AddressEntity createAddressEntity(String street, String additionalInfo) {
         return new AddressEntity(street, additionalInfo);
+    }
+
+    public PhoneEntity createPhoneEntity(int number, String description) {
+        return new PhoneEntity(number, description);
     }
 
 }

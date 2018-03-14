@@ -11,6 +11,7 @@ import entities.AddressEntity;
 import entities.CompanyEntity;
 import entities.InfoEntity;
 import entities.PersonEntity;
+import entities.PhoneEntity;
 import facades.TestDataFacade;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,10 @@ public class Generator {
     //PERSON ENTITY
     String[] firstName = {"Stanislav", "Mikkel", "Mathias", "Alexander", "Sigurd"};
     String[] lastName = {"Hansen", "Christensen", "Dinesen", "Henriksen", "Andersen"};
+
+    //PHONE ENTITY
+    String[] phonedescription = {"fastnet", "privat", "public", "mobil", "midlertidigt"};
+    int[] phonenumbers = {12345678, 87654321, 11223344, 22334455, 33445566};
 
     private int getRndIntValue(int[] array) {
         int index = r.nextInt(array.length);
@@ -86,11 +91,15 @@ public class Generator {
         return first + second;
     }
 
-    public String generateCompanyEntity(int samplesToGenerate) {
+    private String sqlifyPhoneEntity(PhoneEntity temp) {
+        String first = "INSERT INTO PHONEENTITY (NUMBER, DESCRIPTION) VALUES ('";
+        String second = temp.getNumber()+"', '" + temp.getDescription() + "');\n";
+        return first + second;
+    }
 
+    public String generateCompanyEntity(int samplesToGenerate) {
         String sqlList = "";
         int counter = 1;
-
         while (samplesToGenerate > 0) {
             CompanyEntity temp = tdf.createCompanyEntity(getRndStringValue(name), getRndStringValue(description), getRndIntValue(cvr), getRndIntValue(numemployees), getRndLongValue(marketvalue), getRndStringValue(email));
             sqlList += sqlifyCompanyEntity(temp, counter);
@@ -101,10 +110,8 @@ public class Generator {
     }
 
     public String generatePersonEntity(int samplesToGenerate) {
-
         String sqlList = "";
         int counter = 1;
-
         while (samplesToGenerate > 0) {
             PersonEntity temp = tdf.createPersonEntity(getRndStringValue(firstName), getRndStringValue(lastName), getRndStringValue(email));
             sqlList += sqlifyPersonEntity(temp, counter);
@@ -115,9 +122,7 @@ public class Generator {
     }
 
     public String generateInfoEntityEntity(int samplesToGenerate) {
-
         String sqlList = "";
-
         while (samplesToGenerate > 0) {
             InfoEntity temp = tdf.createInfoEntity(getRndStringValue(email));
             sqlList += sqlifyInfoEntity(temp);
@@ -127,12 +132,20 @@ public class Generator {
     }
 
     public String generateAddressEntity(int samplesToGenerate) {
-
         String sqlList = "";
-
         while (samplesToGenerate > 0) {
             AddressEntity temp = tdf.createAddressEntity(getRndStringValue(street), getRndStringValue(additionalInfo));
             sqlList += sqlifyAddressEntity(temp);
+            samplesToGenerate--;
+        }
+        return sqlList;
+    }
+
+    public String generatePhoneEntity(int samplesToGenerate) {
+        String sqlList = "";
+        while (samplesToGenerate > 0) {
+            PhoneEntity temp = tdf.createPhoneEntity(getRndIntValue(phonenumbers), getRndStringValue(phonedescription));
+            sqlList += sqlifyPhoneEntity(temp);
             samplesToGenerate--;
         }
         return sqlList;

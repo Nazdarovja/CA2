@@ -60,5 +60,11 @@ public class testdataRessource {
     public String getAddressTestData(@PathParam("samples") Integer samples) {
         return generator.generateAddressEntity(samples);
     }
+    @Path("/phone/{samples}")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getPhoneTestData(@PathParam("samples") Integer samples) {
+        return generator.generatePhoneEntity(samples);
+    }
 
 }
