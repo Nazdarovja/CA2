@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 /**
@@ -33,6 +34,9 @@ public class AddressEntity implements Serializable {
     @JoinColumn(name = "addressid")
     private List<InfoEntity> infoEntities = new ArrayList<>();
     
+    @ManyToOne
+    @JoinColumn(name = "cityId", referencedColumnName = "zipCode")
+    private CityInfoEntity cityInfo;
 
     public AddressEntity() {
     }

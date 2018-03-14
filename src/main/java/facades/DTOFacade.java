@@ -21,8 +21,8 @@ public class DTOFacade {
         return gson.toJson(jm);
     }
 
-    public String objectToJson(Object t){
-        return gson.toJson(t);
+    public String objectToJson(Object obj){
+        return gson.toJson(obj);
     }
     
     public <T extends JSONDTO> T jsonToMessage(String json, Class<T> c) {
