@@ -1,4 +1,4 @@
-package facades;
+package facades.interfaces;
 
 import entities.CompanyEntity;
 import java.util.List;

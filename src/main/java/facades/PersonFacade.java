@@ -5,6 +5,8 @@
  */
 package facades;
 
+import facades.interfaces.CRUDFacade;
+import facades.interfaces.PersonFacadeInterface;
 import DTO.PersonEntityDTO;
 import entities.PersonEntity;
 import java.util.List;
