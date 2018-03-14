@@ -12,11 +12,13 @@ import java.util.List;
  * @author Mellem
  * @param <T>
  */
-public interface CRUDFacade <T> {
+public interface CRUDInterface <T> {
     
     public T create(T object);
     
-    public T read();
+    public T read(Long id);
+    public T read(String id);
+    
     public List<T> readAll();
     
     public T update(Long id, T object);
