@@ -5,6 +5,7 @@
  */
 package tests;
 
+import entities.HobbyEntity;
 import entities.PersonEntity;
 import facades.PersonFacade;
 import javax.persistence.EntityManager;
@@ -38,6 +39,9 @@ public class Tester {
         PersonFacade pf = new PersonFacade();
 
         PersonEntity p = new PersonEntity("wazza", "name", "abe@banan.dk");
+        p.addHobby(new HobbyEntity("Hoppe", "wauw"));
+        p.addHobby(new HobbyEntity("cykle", "hurtigt"));
+        p.addHobby(new HobbyEntity("spillePUBG", "Sindzygt"));
         PersonEntity p1 = new PersonEntity("wazza2", "name2", "abe@badasdnan.dk");
         PersonEntity p2 = new PersonEntity("wazza3", "nam3", "abe@banadsadsddddddddddn.dk");
         

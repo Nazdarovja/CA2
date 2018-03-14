@@ -26,7 +26,7 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
     // CREATE
     @Override
     public PersonEntity create(PersonEntity object) {
-    EntityManager em = emc.getEm();
+        EntityManager em = emc.getEm();
         try {
             em.getTransaction().begin();
             em.persist(object);
@@ -43,6 +43,7 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
     public PersonEntity read(Long id) {
         PersonEntity p = em.find(PersonEntity.class, id);
         if (p == null) {
+            System.out.println(" HAAAAAAAAAAAAAAAAAAAAAAAALLLLLLLLLOOOOOOOO PUTA STYLE !");
             //TODO Exception stuffs
         }
         return p;
@@ -165,14 +166,14 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
 
     @Override
     public Integer getPersonCountByHobby(String hobby) {
-        Integer res = 0;
+        Long res;
         Query q = em.createQuery("SELECT COUNT(p.id) FROM PersonEntity p JOIN p.hobbies h WHERE h.name = :hobby");
         q.setParameter("hobby", hobby);
-        res = (Integer) q.getSingleResult();
+        res = (Long) q.getSingleResult(); // TOFIX Somehow this returns Long when SQL documentation says it should return int (magic)
         if (res == null) {
             //TODO Throw approp. Exception
         }
-        return res;
+        return res.intValue();
     }
 
 }
