@@ -26,6 +26,7 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
     // CREATE
     @Override
     public PersonEntity create(PersonEntity object) {
+    EntityManager em = emc.getEm();
         try {
             em.getTransaction().begin();
             em.persist(object);
@@ -114,7 +115,7 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
     }
 
     @Override
-    public PersonEntity getPersonByPhoneNumber(Integer number) {
+    public PersonEntity getPersonByPhoneNumber(Long number) {
 
         Query q = em.createQuery("SELECT p FROM PersonEntity p JOIN p.phones ph WHERE ph.number = :number");
         q.setParameter("number", number);
