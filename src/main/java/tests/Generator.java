@@ -25,6 +25,9 @@ public class Generator {
     Random r = new Random();
     TestDataFacade tdf = new TestDataFacade();
 
+    //dirty hack
+    public boolean companyDataGenerated = false;
+
     ////////////////////
     //RANDOM TEST DATA// 
     ////////////////////
@@ -109,9 +112,15 @@ public class Generator {
         return first + second;
     }
 
-    private String sqlifyHobbyEntity(HobbyEntity temp) {
-        String first = "INSERT INTO HOBBYENTITY (DESCRIPTION, NAME) VALUES ('";
-        String second = temp.getDescription() + "', '" + temp.getName() + "');\n";
+    private String sqlifyHobbyEntity(HobbyEntity temp, int id) {
+        String first = "INSERT INTO HOBBYENTITY (ID, DESCRIPTION, NAME) VALUES ('";
+        String second = id + "', '" + temp.getDescription() + "', '" + temp.getName() + "');\n";
+        return first + second;
+    }
+
+    private String sqlifyPersonEntityHobbyEntity(int hobbyID, int personID) {
+        String first = "INSERT INTO personentity_hobbyentity (hobbies_ID, persons_ID) VALUES ('";
+        String second = hobbyID + "', '" + personID + "');\n";
         return first + second;
     }
 
@@ -128,19 +137,22 @@ public class Generator {
 
     public String generatePersonEntity(int samplesToGenerate) {
         String sqlList = "";
-        int counter = 1;
-//        while (samplesToGenerate > 0) {
-        PersonEntity temp = tdf.createPersonEntity(getRndStringValue(firstName), getRndStringValue(lastName), getRndStringValue(email));
-        sqlList += sqlifyPersonEntity(temp, counter);
-//            samplesToGenerate--;
-        counter++;
-//        }
+        int coutnerID = 1;
+        while (coutnerID < samplesToGenerate + 1) {
+            PersonEntity temp = tdf.createPersonEntity(getRndStringValue(firstName), getRndStringValue(lastName), getRndStringValue(email));
+            sqlList += sqlifyPersonEntity(temp, coutnerID);
+            coutnerID++;
+        }
         return sqlList;
     }
 
     public String generateInfoEntity(int samplesToGenerate) {
         String sqlList = "";
         int counterID = 1;
+        if (companyDataGenerated) {
+            counterID += samplesToGenerate;
+            samplesToGenerate *= 2;
+        }
         while (counterID < samplesToGenerate + 1) {
             InfoEntity temp = tdf.createInfoEntity(getRndStringValue(email));
             sqlList += sqlifyInfoEntity(getRndStringValue(dtype), temp, counterID);
@@ -164,6 +176,11 @@ public class Generator {
         int initialPhonenumber = 12345678;
         int phoneNumberChangeFactor = 1;
         int counterID = 1;
+        if (companyDataGenerated) {
+            counterID += samplesToGenerate;
+            samplesToGenerate *= 2;
+            phoneNumberChangeFactor += samplesToGenerate;
+        }
         while (counterID < samplesToGenerate + 1) {
             PhoneEntity temp = tdf.createPhoneEntity(initialPhonenumber + phoneNumberChangeFactor, getRndStringValue(phonedescription));
             sqlList += sqlifyPhoneEntity(temp, counterID);
@@ -175,12 +192,22 @@ public class Generator {
 
     public String generateHobbyEntity(int samplesToGenerate) {
         String sqlList = "";
-        while (samplesToGenerate > 0) {
+        int counterID = 1;
+        while (counterID < samplesToGenerate + 1) {
             HobbyEntity temp = tdf.createHobbyEntity(getRndStringValue(hobbydescription), getRndStringValue(hobbynames));
-            sqlList += sqlifyHobbyEntity(temp);
-            samplesToGenerate--;
+            sqlList += sqlifyHobbyEntity(temp, counterID);
+            counterID++;
         }
         return sqlList;
     }
 
+    public String generatePersonEntityHobbyEntity(int samplesToGenerate) {
+        String sqlList = "";
+        int counterID = 1;
+        while (counterID < samplesToGenerate + 1) {
+            sqlList += sqlifyPersonEntityHobbyEntity(counterID, counterID);
+            counterID++;
+        }
+        return sqlList;
+    }
 }
