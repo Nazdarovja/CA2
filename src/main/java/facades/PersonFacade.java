@@ -5,39 +5,42 @@
  */
 package facades;
 
-import DTO.PersonEntityDTO;
+import facades.interfaces.PersonFacadeInterface;
 import entities.PersonEntity;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import persistence.EntityManagerControl;
+import facades.interfaces.CRUDInterface;
+import javax.persistence.Query;
 
 /**
  *
  * @author Stanislav
  */
-public class PersonFacade implements PersonFacadeInterface {
+public class PersonFacade implements PersonFacadeInterface, CRUDInterface<PersonEntity> {
 
     EntityManagerControl emc = new EntityManagerControl("persistence");
     EntityManager em = emc.getEm();
     DTOFacade dto = new DTOFacade();
 
+    // ------- CRUD -------- CRUD -------- CRUD -------- CRUD --------
+    // CREATE
     @Override
-    public PersonEntity createPerson(String message) {
-        PersonEntity p = dto.fromJson(message, PersonEntityDTO.class);
+    public PersonEntity create(PersonEntity object) {
         try {
             em.getTransaction().begin();
-            em.persist(p);
+            em.persist(object);
             em.getTransaction().commit();
             //TODO Add Catchblock to catch all RuntimeExceptions from em
         } finally {
             em.close();
         }
-        return p;
+        return object;
     }
 
+    // READ
     @Override
-    public PersonEntity getPerson(Long id) {
+    public PersonEntity read(Long id) {
         PersonEntity p = em.find(PersonEntity.class, id);
         if (p == null) {
             //TODO Exception stuffs
@@ -45,25 +48,50 @@ public class PersonFacade implements PersonFacadeInterface {
         return p;
     }
 
+    // READ
     @Override
-    public PersonEntity updatePerson(Long id, String message) {
-        PersonEntity p = dto.fromJson(message, PersonEntityDTO.class);
-        p.setId(id);
+    public PersonEntity read(String id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    // READ (all)
+    @Override
+    public List<PersonEntity> readAll() {
+        Query q = em.createQuery("SELECT p FROM PersonEntity p");
+        List<PersonEntity> list = (List<PersonEntity>) q.getResultList();
+
+        if (list.isEmpty()) {
+            //TODO Exception stuffs
+        }
+        return list;
+    }
+
+    // UPDATE
+    @Override
+    public PersonEntity update(Long id, PersonEntity object) {
+        object.setId(id);
 
         try {
             em.getTransaction().begin();
             //TODO catch exception thrown by .merge() (IllegalArgumentException) if person does not exist in DB
-            em.merge(p);
+            em.merge(object);
             em.getTransaction().commit();
             //TODO Add Catchblock to catch all RuntimeExceptions from em (convert to appropriate ex)
         } finally {
             em.close();
         }
-        return p;
+        return object;
     }
 
+    // UPDATE
     @Override
-    public PersonEntity deletePerson(Long id) {
+    public PersonEntity update(String id, PersonEntity object) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    // DELETE
+    @Override
+    public PersonEntity delete(Long id) {
         PersonEntity p = em.find(PersonEntity.class, id);
         if (p == null) {
             //TODO throw Exception
@@ -78,6 +106,12 @@ public class PersonFacade implements PersonFacadeInterface {
             em.close();
         }
         return p;
+    }
+
+    // DELETE
+    @Override
+    public PersonEntity delete(String id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -135,7 +169,7 @@ public class PersonFacade implements PersonFacadeInterface {
         Query q = em.createQuery("SELECT COUNT(p.id) FROM PersonEntity p JOIN p.hobbies h WHERE h.name = :hobby");
         q.setParameter("hobby", hobby);
         res = (Integer) q.getSingleResult();
-        if(res == null){
+        if (res == null) {
             //TODO Throw approp. Exception
         }
         return res;
