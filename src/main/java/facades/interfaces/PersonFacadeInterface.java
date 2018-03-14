@@ -13,14 +13,6 @@ import java.util.List;
  * @author Stanislav
  */
 public interface PersonFacadeInterface {
-    //POST 
-    public PersonEntity createPerson(String message);
-    //GET
-    public PersonEntity getPerson(Long id);
-    //PUT a person id as a URL parameter, and updates with given JSON (message)
-    public PersonEntity updatePerson(Long id, String message);
-    //DELETE (returns deleted PersonEntity, for whatever reason)
-    public PersonEntity deletePerson(Long id);
     public PersonEntity getPersonByPhoneNumber(Integer number);
     public List<PersonEntity> getAllPersonsByHobby(String hobby);
     public List<PersonEntity> getAllPersonsByCity(String city);
