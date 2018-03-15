@@ -35,6 +35,14 @@ public class CompanyEntity extends InfoEntity implements Serializable {
         this.numEmployees = numEmployees;
         this.marketValue = marketValue;
     }
+    //test
+    public CompanyEntity(String name, String description, int cvr, int numEmployees, long marketValue) {
+        this.name = name;
+        this.description = description;
+        this.cvr = cvr;
+        this.numEmployees = numEmployees;
+        this.marketValue = marketValue;
+    }
     
     public String getName() {
         return name;

@@ -32,6 +32,7 @@ public class Tester {
     }
     
     public static void main(String[] args) {
+      
         Tester tester = new Tester(Persistence.createEntityManagerFactory("persistence"));
         EntityManager em = tester.getEntityManager();
         Persistence.generateSchema("persistence", null);
