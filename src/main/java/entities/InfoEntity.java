@@ -38,7 +38,7 @@ public abstract class InfoEntity implements Serializable {
     @JoinColumn(name = "infoentityid")
     private List<PhoneEntity> phones = new ArrayList<>();
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name="ADDRESSID")
     private AddressEntity address;
     

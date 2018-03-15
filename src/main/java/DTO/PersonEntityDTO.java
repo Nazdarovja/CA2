@@ -5,6 +5,7 @@
  */
 package DTO;
 
+import entities.AddressEntity;
 import entities.HobbyEntity;
 import entities.PersonEntity;
 import facades.AddressFacade;
@@ -47,21 +48,21 @@ public class PersonEntityDTO implements JSONDTO<PersonEntity> {
         AddressFacade af = new AddressFacade();
         HobbyFacade hf = new HobbyFacade();
         PhoneFacade pf = new PhoneFacade();
-
+        
         //TOFIX in doubt if these are the right object representations, as they lack the bidirectional relationships.
-        p.setAddress(af.read(address.getId()));
+        p.setAddress(address.toInternal());
+        
+//        List<HobbyEntity> hobbies = new ArrayList();
+//        hobbyDTOs.forEach((h) -> {
+//            hobbies.add(h.toInternal());
+//        });
+//        p.setHobbies(hobbies);
 
-        List<HobbyEntity> hobbies = new ArrayList();
-        hobbyDTOs.forEach((h) -> {
-            hobbies.add(hf.read(h.getName()));
-        });
-        p.setHobbies(hobbies);
-
-        List<PhoneEntity> phones = new ArrayList();
-        this.phoneNumbers.forEach((pn) -> {
-            phones.add(pf.read(pn.getNumber()));
-        });
-        p.setPhones(phones);
+//        List<PhoneEntity> phones = new ArrayList();
+//        this.phoneNumbers.forEach((pn) -> {
+//            phones.add(pn.toInternal());
+//        });
+//        p.setPhones(phones);
         return p;
     }
 

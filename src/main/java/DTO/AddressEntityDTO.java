@@ -31,7 +31,7 @@ public class AddressEntityDTO implements JSONDTO<AddressEntity> {
 
     @Override
     public AddressEntity toInternal() {
-        return new AddressEntity(id, street, additionalInfo);
+        return new AddressEntity(id, street, additionalInfo, cityInfo.toInternal());
     }
 
 }

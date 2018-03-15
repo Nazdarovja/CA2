@@ -46,6 +46,13 @@ public class AddressEntity implements Serializable {
         this.street = street;
         this.additionalInfo = additionalInfo;
     }
+
+    public AddressEntity(Long id, String street, String additionalInfo, CityInfoEntity cityInfo) {
+        this.id = id;
+        this.street = street;
+        this.additionalInfo = additionalInfo;
+        this.cityInfo = cityInfo;
+    }
     
     public void addCityEntity(CityInfoEntity cie){
         this.cityInfo = cie;

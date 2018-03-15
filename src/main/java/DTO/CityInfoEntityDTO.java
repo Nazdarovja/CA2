@@ -23,6 +23,6 @@ public class CityInfoEntityDTO implements JSONDTO<CityInfoEntity> {
 
     @Override
     public CityInfoEntity toInternal() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new CityInfoEntity(zipCode, city);
     }
 }
