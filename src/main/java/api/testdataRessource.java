@@ -5,7 +5,6 @@
  */
 package api;
 
-import entities.CityInfoEntity;
 import tests.Generator;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -72,8 +71,8 @@ public class testdataRessource {
 //    @Path("/hobby/{samples}")
 //    @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String getHobbyTestData(@PathParam("samples") Integer samples) {
-        return generator.generateHobbyEntity(samples);
+    public String getHobbyTestData() {
+        return generator.generateHobbyEntity();
     }
 
     @Path("/sql/{samples}")
@@ -97,7 +96,7 @@ public class testdataRessource {
         sql += generator.generateInfoEntity(samples);
         sql += generator.generatePhoneEntity(samples);
         sql += generator.generatePersonEntity(samples);
-        sql += generator.generateHobbyEntity(samples);
+        sql += generator.generateHobbyEntity();
         sql += generator.generatePersonEntityHobbyEntity(samples);
         return sql;
     }

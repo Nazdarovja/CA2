@@ -13,7 +13,7 @@ import entities.PhoneEntity;
  */
 public class PhoneEntityDTO implements JSONDTO<PhoneEntity> {
 
-    public Integer number;
+    public Long number;
     public String description;
 
     public PhoneEntityDTO(PhoneEntity p) {

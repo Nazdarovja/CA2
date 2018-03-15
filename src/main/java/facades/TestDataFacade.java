@@ -40,7 +40,7 @@ public class TestDataFacade {
         return new AddressEntity(street, additionalInfo);
     }
 
-    public PhoneEntity createPhoneEntity(int number, String description) {
+    public PhoneEntity createPhoneEntity(Long number, String description) {
         return new PhoneEntity(number, description);
     }
     public HobbyEntity createHobbyEntity(String name, String description) {

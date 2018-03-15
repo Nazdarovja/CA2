@@ -36,7 +36,7 @@ public abstract class InfoEntity implements Serializable {
     @JoinColumn(name = "infoentityid")
     private List<PhoneEntity> phones = new ArrayList<>();
     @ManyToOne
-    @JoinColumn(name = "ADDRESS_ID", referencedColumnName = "id")
+    @JoinColumn(name="ADDRESSID")
     private AddressEntity address;
     
     public InfoEntity() {
