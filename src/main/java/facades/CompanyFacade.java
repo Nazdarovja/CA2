@@ -19,12 +19,12 @@ import persistence.EntityManagerControl;
  */
 public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<CompanyEntity> {
 
-    EntityManagerControl emc = new EntityManagerControl("persistence");
-    EntityManager em = emc.getEm();
+    EntityManagerControl emc = new EntityManagerControl();
     DTOFacade dto = new DTOFacade();
-    
+
     @Override
     public CompanyEntity getCompanyByPhoneNumberJSON(Integer phoneNumber) {
+        EntityManager em = emc.getEm();
         Query query = em.createQuery("SELECT p from PersonEntity p JOIN p.phones ph WHERE ph.number = :number");
         query.setParameter("number", phoneNumber);
         return (CompanyEntity) query.getSingleResult();
@@ -33,6 +33,7 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
 
     @Override
     public int getCompanyCountByZipCode(String zipcode) {
+        EntityManager em = emc.getEm();
         Query query = em.createQuery("SELECT count(c.id) from CompanyEntity c WHERE c.address.cityInfo.zipCode = :zipcode");
         query.setParameter("zipcode", zipcode);
         return (int) query.getSingleResult();
@@ -42,6 +43,7 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
 
     @Override
     public List<CompanyEntity> getCompaniesByMarketValueAbove(Long marketValue) {
+        EntityManager em = emc.getEm();
         Query query = em.createQuery("SELECT c from CompanyEntity c WHERE c.marketValue > :marketValue");
         query.setParameter("marketValue", marketValue);
         return query.getResultList();
@@ -50,20 +52,18 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
 
     @Override
     public int getCompanyCountByNumEmployeesBelow(Integer numEmployees) {
+        EntityManager em = emc.getEm();
         Query query = em.createQuery("SELECT count(c.id) from CompanyEntity c WHERE c.numEmployees < :numEmployees");
         query.setParameter("numEmployees", numEmployees);
         return (int) query.getSingleResult();
         //TODO ErrorHandling
     }
 
-
-    
-    
     // ------- CRUD -------- CRUD -------- CRUD -------- CRUD --------
-    
     // CREATE
     @Override
     public CompanyEntity create(CompanyEntity object) {
+        EntityManager em = emc.getEm();
         try {
             em.getTransaction().begin();
             em.persist(object);
@@ -78,6 +78,7 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
     // READ
     @Override
     public CompanyEntity read(Long id) {
+        EntityManager em = emc.getEm();
         CompanyEntity c = em.find(CompanyEntity.class, id);
         if (c == null) {
             //TODO Exception stuffs
@@ -94,9 +95,10 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
     // READ (all)
     @Override
     public List<CompanyEntity> readAll() {
+        EntityManager em = emc.getEm();
         Query q = em.createQuery("SELECT c FROM CompanyEntity c");
-        List<CompanyEntity> list = (List<CompanyEntity>)q.getResultList();
-        
+        List<CompanyEntity> list = (List<CompanyEntity>) q.getResultList();
+
         if (list.isEmpty()) {
             //TODO Exception stuffs
         }
@@ -106,6 +108,7 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
     // UPDATE
     @Override
     public CompanyEntity update(Long id, CompanyEntity object) {
+        EntityManager em = emc.getEm();
         object.setId(id);
 
         try {
@@ -129,6 +132,7 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
     // DELETE
     @Override
     public CompanyEntity delete(Long id) {
+        EntityManager em = emc.getEm();
         CompanyEntity c = em.find(CompanyEntity.class, id);
         if (c == null) {
             //TODO throw Exception
@@ -151,7 +155,4 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    
-
-    
 }

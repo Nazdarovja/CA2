@@ -5,9 +5,6 @@
  */
 package tests;
 
-import entities.HobbyEntity;
-import entities.PersonEntity;
-import facades.PersonFacade;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;

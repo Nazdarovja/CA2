@@ -19,11 +19,11 @@ import persistence.EntityManagerControl;
  */
 public class HobbyFacade implements CRUDInterface<HobbyEntity> {
 
-    EntityManagerControl emc = new EntityManagerControl("persistence");
-    EntityManager em = emc.getEm();
+    EntityManagerControl emc = new EntityManagerControl();
 
     @Override
     public HobbyEntity create(HobbyEntity object) {
+        EntityManager em = emc.getEm();
         try {
             em.getTransaction().begin();
             em.persist(object);
@@ -42,6 +42,7 @@ public class HobbyFacade implements CRUDInterface<HobbyEntity> {
 
     @Override
     public HobbyEntity read(String id) {
+        EntityManager em = emc.getEm();
         HobbyEntity h = em.find(HobbyEntity.class, id);
         if (h == null) {
             //TODO Exception stuffs
@@ -51,6 +52,7 @@ public class HobbyFacade implements CRUDInterface<HobbyEntity> {
 
     @Override
     public List<HobbyEntity> readAll() {
+        EntityManager em = emc.getEm();
         Query q = em.createQuery("SELECT h FROM HobbyEntity h");
         List<HobbyEntity> list = (List<HobbyEntity>) q.getResultList();
 
@@ -67,6 +69,7 @@ public class HobbyFacade implements CRUDInterface<HobbyEntity> {
 
     @Override
     public HobbyEntity update(String id, HobbyEntity object) {
+        EntityManager em = emc.getEm();
         object.setName(id);
 
         try {
@@ -88,6 +91,7 @@ public class HobbyFacade implements CRUDInterface<HobbyEntity> {
 
     @Override
     public HobbyEntity delete(String id) {
+        EntityManager em = emc.getEm();
         HobbyEntity h = em.find(HobbyEntity.class, id);
         if (h == null) {
             //TODO throw Exception

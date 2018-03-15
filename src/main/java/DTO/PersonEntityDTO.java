@@ -27,7 +27,7 @@ public class PersonEntityDTO implements JSONDTO<PersonEntity> {
         this.lastName = p.getLastName();
         this.email = p.getEmail();
         p.getHobbies().forEach((h) -> {
-            this.hobbyDTOs.add(new HobbyEntityDTO(h.getName(), h.getDescription()));
+            this.hobbyDTOs.add(new HobbyEntityDTO(h));
         });
     }
 
