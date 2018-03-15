@@ -5,6 +5,7 @@
  */
 package persistence;
 
+import java.util.HashMap;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -21,6 +22,10 @@ public class EntityManagerControl {
         this.emf = Persistence.createEntityManagerFactory("persistence");
     }
 
+    public EntityManagerControl(HashMap<String, String> map) {
+        this.emf = Persistence.createEntityManagerFactory("persistence",map);
+    }
+    
     public EntityManager getEm() {
         return emf.createEntityManager();
     }

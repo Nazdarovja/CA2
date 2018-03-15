@@ -5,6 +5,7 @@
  */
 package facades;
 
+import entities.InfoEntity;
 import facades.interfaces.PersonFacadeInterface;
 import entities.PersonEntity;
 import errors.code400.ValidationErrorException;
@@ -23,7 +24,17 @@ import javax.persistence.Query;
  */
 public class PersonFacade implements PersonFacadeInterface, CRUDInterface<PersonEntity> {
 
-    EntityManagerControl emc = new EntityManagerControl();
+    EntityManagerControl emc;
+
+    public PersonFacade() {
+        emc = new EntityManagerControl();
+    }
+
+    public PersonFacade(EntityManagerControl emc) {
+        this.emc = emc;
+    }
+    
+    
 
     // ------- CRUD -------- CRUD -------- CRUD -------- CRUD --------
     // CREATE
@@ -47,17 +58,35 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
         return object;
     }
 
+    // READ 
+    public InfoEntity rea(Long id) {
+        EntityManager em = emc.getEm();
+        try{
+            InfoEntity p = em.find(InfoEntity.class, id);
+            if (p == null) 
+                throw new PersonNotFoundException();
+            return p;
+        } finally {
+            em.close();
+        }
+    }
+
+    
     // READ
     @Override
     public PersonEntity read(Long id) {
-    EntityManager em = emc.getEm();
-        PersonEntity p = em.find(PersonEntity.class, id);
-        if (p == null) 
-            throw new PersonNotFoundException();
-        em.close();
-        return p;
+        EntityManager em = emc.getEm();
+        try{
+            InfoEntity p = em.find(InfoEntity.class, id);
+            System.out.println(p);
+            if (p == null || !(p instanceof PersonEntity)) 
+                throw new PersonNotFoundException();
+            return (PersonEntity)p;
+        } finally {
+            em.close();
+        }
     }
-
+    
     // READ
     @Override
     public PersonEntity read(String id) {
@@ -82,6 +111,20 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
             throw new ValidationErrorException();
         object.setId(id);
         if(em.find(PersonEntity.class, id) == null) 
+            throw new PersonNotFoundException();
+        em.getTransaction().begin();
+        em.merge(object);
+        em.getTransaction().commit();
+        em.close();
+        return object;
+    }
+    // UPDATE 
+    public InfoEntity upd(Long id, PersonEntity object) {
+        EntityManager em = emc.getEm();
+        if(object.getFirstName().equals("") || object.getLastName().equals("") || object.getEmail().equals(""))
+            throw new ValidationErrorException();
+        object.setId(id);
+        if(em.find(InfoEntity.class, id) == null) 
             throw new PersonNotFoundException();
         em.getTransaction().begin();
         em.merge(object);
@@ -132,7 +175,7 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
             em.close();
         }
     }
-
+    
     @Override
     public List<PersonEntity> getAllPersonsByHobby(String hobby) {
         EntityManager em = emc.getEm();
