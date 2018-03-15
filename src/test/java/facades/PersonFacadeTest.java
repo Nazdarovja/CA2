@@ -4,10 +4,8 @@ import entities.InfoEntity;
 import entities.PersonEntity;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -23,11 +21,9 @@ public class PersonFacadeTest {
     EntityManager em;
     EntityManagerControl emc;
     PersonFacade pf;
-    
+
     EntityManagerFactory managerFactory;
     HashMap<String, String> persistenceMap = new HashMap<>();
-
-    
 
     public PersonFacadeTest() {
     }
@@ -52,11 +48,11 @@ public class PersonFacadeTest {
         Long result = pf.rea(id).getId();
         assertEquals(expResult, result);
     }
-    
+
     @Test
     public void testCreate() {
         System.out.println("create");
-        PersonEntity object = new PersonEntity("xx", "xx", "test@email.dk");
+        PersonEntity object = new PersonEntity("xx", "xx", "newlycreated@email.dk");
         PersonEntity expResult = object;
         PersonEntity result = pf.create(object);
         assertEquals(expResult, result);
@@ -65,37 +61,29 @@ public class PersonFacadeTest {
     @Test
     public void testReadAll() {
         System.out.println("readAll");
-        PersonFacade instance = new PersonFacade();
-        int expResult = 5;
-        List<PersonEntity> result = instance.readAll();
-        assertEquals(expResult, result.size());
+        int expResult = 10;
+        List<PersonEntity> result = pf.readAll();
+        assertEquals(expResult, result.size(), 1);
     }
 
     @Test
     public void testUpdate_Long_PersonEntity() {
         System.out.println("update");
-        Long id = 1L;
-        PersonEntity newObject = new PersonEntity("NEW UPDATED", "PERSON", "new@email.dk");
-        PersonFacade instance = new PersonFacade();
-        Long expResult = 1L;
-        InfoEntity result = instance.upd(id, newObject);
-//        assertEquals(expResult., result.getId());
+        Long id = 11L;
+        PersonEntity newObject = new PersonEntity("NEW UPDATED", "PERSON", "NEWUPDATEDPERSON@email.dk");
+        Long expResult = 11L;
+        InfoEntity result = pf.upd(id, newObject);
+        assertEquals(expResult, result.getId());
     }
 
-
-
-    //@Test
+    @Test
     public void testDelete_Long() {
         System.out.println("delete");
-        Long id = null;
-        PersonFacade instance = new PersonFacade();
-        PersonEntity expResult = null;
-        PersonEntity result = instance.delete(id);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
+        Long id = 11L;
+        Long expResult = 11L;
+        PersonEntity result = pf.delete(id);
+        assertEquals(expResult, result.getId());
     }
-
-
 
     //@Test
     public void testGetPersonByPhoneNumber() {

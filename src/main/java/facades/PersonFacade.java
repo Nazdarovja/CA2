@@ -58,7 +58,7 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
         return object;
     }
 
-    // READ
+    // READ 
     public InfoEntity rea(Long id) {
         EntityManager em = emc.getEm();
         try{
@@ -117,7 +117,7 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
         em.close();
         return object;
     }
-    // UPDATE
+    // UPDATE 
     public InfoEntity upd(Long id, PersonEntity object) {
         EntityManager em = emc.getEm();
         if(object.getFirstName().equals("") || object.getLastName().equals("") || object.getEmail().equals(""))
@@ -174,7 +174,7 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
             em.close();
         }
     }
-
+    
     @Override
     public List<PersonEntity> getAllPersonsByHobby(String hobby) {
         EntityManager em = emc.getEm();
