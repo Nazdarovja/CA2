@@ -10,7 +10,7 @@ package errors.code400;
  * @author Orchi
  */
 public class ValidationErrorException extends RuntimeException {
-    String message = "Override this shit";
+    String message = "Your input could not be validated";
     
     @Override
     public String getMessage() {

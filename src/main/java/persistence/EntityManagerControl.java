@@ -32,4 +32,8 @@ public class EntityManagerControl {
     public void setProductionEmf(String persistenceUnitName) {
         this.emf = Persistence.createEntityManagerFactory("persistence");
     }
+    
+    public void setPersistenceUnitName(String persistenceUnitName){
+        this.emf = Persistence.createEntityManagerFactory(persistenceUnitName);
+    }
 }

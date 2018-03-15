@@ -6,6 +6,7 @@
 package facades.interfaces;
 
 import java.util.List;
+import persistence.EntityManagerControl;
 
 /**
  *
@@ -13,7 +14,7 @@ import java.util.List;
  * @param <T>
  */
 public interface CRUDInterface <T> {
-    
+
     public T create(T object);
     
     public T read(Long id);
