@@ -6,7 +6,6 @@
 package facades;
 
 import entities.CityInfoEntity;
-import entities.HobbyEntity;
 import facades.interfaces.CRUDInterface;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -19,11 +18,11 @@ import persistence.EntityManagerControl;
  */
 public class CityInfoFacade implements CRUDInterface<CityInfoEntity> {
 
-    EntityManagerControl emc = new EntityManagerControl("persistence");
-    EntityManager em = emc.getEm();
+    EntityManagerControl emc = new EntityManagerControl();
 
     @Override
     public CityInfoEntity create(CityInfoEntity object) {
+    EntityManager em = emc.getEm();
         try {
             em.getTransaction().begin();
             em.persist(object);
@@ -42,6 +41,7 @@ public class CityInfoFacade implements CRUDInterface<CityInfoEntity> {
 
     @Override
     public CityInfoEntity read(String id) {
+    EntityManager em = emc.getEm();
         CityInfoEntity cI = em.find(CityInfoEntity.class, id);
         if (cI == null) {
             //TODO Exception stuffs
@@ -51,6 +51,7 @@ public class CityInfoFacade implements CRUDInterface<CityInfoEntity> {
 
     @Override
     public List<CityInfoEntity> readAll() {
+    EntityManager em = emc.getEm();
         Query q = em.createQuery("SELECT cI FROM CityInfoEntity cI");
         List<CityInfoEntity> list = (List<CityInfoEntity>) q.getResultList();
 
@@ -67,6 +68,7 @@ public class CityInfoFacade implements CRUDInterface<CityInfoEntity> {
 
     @Override
     public CityInfoEntity update(String id, CityInfoEntity object) {
+    EntityManager em = emc.getEm();
         object.setZipCode(id);
 
         try {
@@ -89,6 +91,7 @@ public class CityInfoFacade implements CRUDInterface<CityInfoEntity> {
 
     @Override
     public CityInfoEntity delete(String id) {
+    EntityManager em = emc.getEm();
         CityInfoEntity cI = em.find(CityInfoEntity.class, id);
         if (cI == null) {
             //TODO throw Exception

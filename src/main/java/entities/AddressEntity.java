@@ -30,17 +30,16 @@ public class AddressEntity implements Serializable {
     private Long id;
     private String street;
     private String additionalInfo;
-    @OneToMany(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "addressid")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "address")
     private List<InfoEntity> infoEntities = new ArrayList<>();
-    
+
     @ManyToOne
-    @JoinColumn(name = "cityId", referencedColumnName = "zipCode")
+    @JoinColumn(name="ZIPCODE")
     private CityInfoEntity cityInfo;
 
     public AddressEntity() {
     }
-    
+
     public AddressEntity(String street, String additionalInfo) {
         this.street = street;
         this.additionalInfo = additionalInfo;
@@ -53,7 +52,7 @@ public class AddressEntity implements Serializable {
     public void setInfoEntities(List<InfoEntity> infoEntities) {
         this.infoEntities = infoEntities;
     }
-    
+
     public String getAdditionalInfo() {
         return additionalInfo;
     }
@@ -69,7 +68,7 @@ public class AddressEntity implements Serializable {
     public void setStreet(String street) {
         this.street = street;
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -102,5 +101,5 @@ public class AddressEntity implements Serializable {
     public String toString() {
         return "entities.AddressEntity[ id=" + id + " ]";
     }
-    
+
 }

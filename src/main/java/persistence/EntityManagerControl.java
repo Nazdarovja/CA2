@@ -17,16 +17,19 @@ public class EntityManagerControl {
 
     EntityManagerFactory emf;
 
-    public EntityManagerControl(String persistenceUnitName) {
-        this.emf = Persistence.createEntityManagerFactory(persistenceUnitName);
+    public EntityManagerControl() {
+        this.emf = Persistence.createEntityManagerFactory("persistence");
     }
 
     public EntityManager getEm() {
         return emf.createEntityManager();
     }
 
-    public void setTestEmf(String persistenceUnitName) {
-        this.emf = Persistence.createEntityManagerFactory(persistenceUnitName);
+    public void setTestEmf() {
+        this.emf = Persistence.createEntityManagerFactory("");
     }
 
+    public void setProductionEmf(String persistenceUnitName) {
+        this.emf = Persistence.createEntityManagerFactory("persistence");
+    }
 }

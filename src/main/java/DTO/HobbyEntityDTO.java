@@ -11,18 +11,20 @@ import entities.HobbyEntity;
  *
  * @author Stanislav
  */
-public class HobbyEntityDTO implements JSONDTO<HobbyEntity>{
+public class HobbyEntityDTO implements JSONDTO<HobbyEntity> {
+
     private String name;
     private String description;
 
-    public HobbyEntityDTO(String name, String description) {
-        this.name = name;
-        this.description = description;
+    public HobbyEntityDTO(HobbyEntity he) {
+        this.name = he.getName();
+        this.description = he.getDescription();
     }
-        
+
+
     @Override
     public HobbyEntity toInternal() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new HobbyEntity(name, description);
     }
-    
+
 }
