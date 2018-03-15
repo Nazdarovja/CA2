@@ -32,7 +32,7 @@ public class NotFoundExceptionMapper implements
         //boolean isDebug = context.getInitParameter("debug").equals("true");
         ErrorMessage err = new ErrorMessage(ex, 404, true);
         err.setDescription("The item you're looking for could not be found! Too bad");
-        return Response.status(404)
+        return Response.status(400)
                 .entity(gson.toJson(err))
                 .type(MediaType.APPLICATION_JSON)
                 .build();
