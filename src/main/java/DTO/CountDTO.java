@@ -9,11 +9,11 @@ package DTO;
  *
  * @author Stanislav
  */
-public class PersonCountDTO implements JSONDTO<Object> {
+public class CountDTO implements JSONDTO<Object> {
 
     private Integer count;
 
-    public PersonCountDTO(Integer count) {
+    public CountDTO(Integer count) {
         this.count = count;
     }
 

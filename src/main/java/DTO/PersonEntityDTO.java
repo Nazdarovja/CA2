@@ -23,6 +23,7 @@ public class PersonEntityDTO implements JSONDTO<PersonEntity> {
 
     //TODO: Simpel representation.
     public PersonEntityDTO(PersonEntity p) {
+        
         this.firstName = p.getFirstName();
         this.lastName = p.getLastName();
         this.email = p.getEmail();

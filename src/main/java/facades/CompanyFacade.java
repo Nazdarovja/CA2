@@ -22,43 +22,6 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
     EntityManagerControl emc = new EntityManagerControl();
     DTOFacade dto = new DTOFacade();
 
-    @Override
-    public CompanyEntity getCompanyByPhoneNumberJSON(Integer phoneNumber) {
-        EntityManager em = emc.getEm();
-        Query query = em.createQuery("SELECT p from PersonEntity p JOIN p.phones ph WHERE ph.number = :number");
-        query.setParameter("number", phoneNumber);
-        return (CompanyEntity) query.getSingleResult();
-        //TODO ErrorHandling
-    }
-
-    @Override
-    public int getCompanyCountByZipCode(String zipcode) {
-        EntityManager em = emc.getEm();
-        Query query = em.createQuery("SELECT count(c.id) from CompanyEntity c WHERE c.address.cityInfo.zipCode = :zipcode");
-        query.setParameter("zipcode", zipcode);
-        return (int) query.getSingleResult();
-        //TODO ErrorHandling
-
-    }
-
-    @Override
-    public List<CompanyEntity> getCompaniesByMarketValueAbove(Long marketValue) {
-        EntityManager em = emc.getEm();
-        Query query = em.createQuery("SELECT c from CompanyEntity c WHERE c.marketValue > :marketValue");
-        query.setParameter("marketValue", marketValue);
-        return query.getResultList();
-        //TODO ErrorHandling
-    }
-
-    @Override
-    public int getCompanyCountByNumEmployeesBelow(Integer numEmployees) {
-        EntityManager em = emc.getEm();
-        Query query = em.createQuery("SELECT count(c.id) from CompanyEntity c WHERE c.numEmployees < :numEmployees");
-        query.setParameter("numEmployees", numEmployees);
-        return (int) query.getSingleResult();
-        //TODO ErrorHandling
-    }
-
     // ------- CRUD -------- CRUD -------- CRUD -------- CRUD --------
     // CREATE
     @Override
@@ -153,6 +116,43 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
     @Override
     public CompanyEntity delete(String id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public CompanyEntity getCompanyByPhoneNumber(Long phoneNumber) {
+        EntityManager em = emc.getEm();
+        Query query = em.createQuery("SELECT p from PersonEntity p JOIN p.phones ph WHERE ph.number = :number");
+        query.setParameter("number", phoneNumber);
+        return (CompanyEntity) query.getSingleResult();
+        //TODO ErrorHandling
+    }
+
+    @Override
+    public int getCompanyCountByZipCode(String zipcode) {
+        EntityManager em = emc.getEm();
+        Query query = em.createQuery("SELECT count(c.id) from CompanyEntity c WHERE c.address.cityInfo.zipCode = :zipcode");
+        query.setParameter("zipcode", zipcode);
+        return (int) query.getSingleResult();
+        //TODO ErrorHandling
+
+    }
+
+    @Override
+    public List<CompanyEntity> getCompaniesByMarketValueAbove(Long marketValue) {
+        EntityManager em = emc.getEm();
+        Query query = em.createQuery("SELECT c from CompanyEntity c WHERE c.marketValue > :marketValue");
+        query.setParameter("marketValue", marketValue);
+        return query.getResultList();
+        //TODO ErrorHandling
+    }
+
+    @Override
+    public int getCompanyCountByNumEmployeesBelow(Integer numEmployees) {
+        EntityManager em = emc.getEm();
+        Query query = em.createQuery("SELECT count(c.id) from CompanyEntity c WHERE c.numEmployees < :numEmployees");
+        query.setParameter("numEmployees", numEmployees);
+        return (int) query.getSingleResult();
+        //TODO ErrorHandling
     }
 
 }
