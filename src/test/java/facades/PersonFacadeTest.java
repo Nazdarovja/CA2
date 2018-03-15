@@ -1,7 +1,9 @@
 package facades;
 
 import entities.PersonEntity;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -20,6 +22,11 @@ public class PersonFacadeTest {
     EntityManager em;
     EntityManagerControl emc;
     PersonFacade pf;
+    
+    EntityManagerFactory managerFactory;
+    HashMap<String, String> persistenceMap = new HashMap<>();
+
+    
 
     public PersonFacadeTest() {
     }
@@ -28,14 +35,23 @@ public class PersonFacadeTest {
     public void setUp() {
 //        emf = Persistence.createEntityManagerFactory("persistenceTEST");
 //        em = emf.createEntityManager();
-//        Persistence.generateSchema("persistenceTEST", null);
-        emc = new EntityManagerControl();
-        emc.setPersistenceUnitName("persistenceTEST");
-        pf = new PersonFacade();
-        pf.emc = emc;
+//        Persistence.generateSchema("persistence", null);
+
+        persistenceMap.put("javax.persistence.jdbc.url", "jdbc:mysql://localhost:3306/ca2test");
+        emc = new EntityManagerControl(persistenceMap);
+        pf = new PersonFacade(emc);
 
     }
 
+    @Test
+    public void testRead_Long() {
+        System.out.println("read");
+        Long id = 1L;
+        Long expResult = 1L;
+        Long result = pf.rea(id).getId();
+        assertEquals(expResult, result);
+    }
+    
     @Test
     public void testCreate() {
         System.out.println("create");
@@ -45,17 +61,7 @@ public class PersonFacadeTest {
         assertEquals(expResult, result);
     }
 
-    @Test
-    public void testRead_Long() {
-        System.out.println("read");
-        Long id = 1L;
-        PersonEntity expResult = null;
-        PersonEntity result = pf.read(id);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
-
-    @Test
+    //@Test
     public void testRead_String() {
         System.out.println("read");
         String id = "";
@@ -66,7 +72,7 @@ public class PersonFacadeTest {
         fail("The test case is a prototype.");
     }
 
-    @Test
+    //@Test
     public void testReadAll() {
         System.out.println("readAll");
         PersonFacade instance = new PersonFacade();
@@ -76,7 +82,7 @@ public class PersonFacadeTest {
         fail("The test case is a prototype.");
     }
 
-    @Test
+    //@Test
     public void testUpdate_Long_PersonEntity() {
         System.out.println("update");
         Long id = null;
@@ -88,7 +94,7 @@ public class PersonFacadeTest {
         fail("The test case is a prototype.");
     }
 
-    @Test
+    //@Test
     public void testUpdate_String_PersonEntity() {
         System.out.println("update");
         String id = "";
@@ -100,7 +106,7 @@ public class PersonFacadeTest {
         fail("The test case is a prototype.");
     }
 
-    @Test
+    //@Test
     public void testDelete_Long() {
         System.out.println("delete");
         Long id = null;
@@ -111,7 +117,7 @@ public class PersonFacadeTest {
         fail("The test case is a prototype.");
     }
 
-    @Test
+    //@Test
     public void testDelete_String() {
         System.out.println("delete");
         String id = "";
@@ -122,7 +128,7 @@ public class PersonFacadeTest {
         fail("The test case is a prototype.");
     }
 
-    @Test
+    //@Test
     public void testGetPersonByPhoneNumber() {
         System.out.println("getPersonByPhoneNumber");
         Long number = null;
@@ -133,7 +139,7 @@ public class PersonFacadeTest {
         fail("The test case is a prototype.");
     }
 
-    @Test
+    //@Test
     public void testGetAllPersonsByHobby() {
         System.out.println("getAllPersonsByHobby");
         String hobby = "";
@@ -144,7 +150,7 @@ public class PersonFacadeTest {
         fail("The test case is a prototype.");
     }
 
-    @Test
+    //@Test
     public void testGetAllPersonsByCity() {
         System.out.println("getAllPersonsByCity");
         String city = "";
@@ -155,7 +161,7 @@ public class PersonFacadeTest {
         fail("The test case is a prototype.");
     }
 
-    @Test
+    //@Test
     public void testGetAllPersonsByStreet() {
         System.out.println("getAllPersonsByStreet");
         String street = "";
@@ -166,7 +172,7 @@ public class PersonFacadeTest {
         fail("The test case is a prototype.");
     }
 
-    @Test
+    //@Test
     public void testGetPersonCountByHobby() {
         System.out.println("getPersonCountByHobby");
         String hobby = "";

@@ -5,6 +5,7 @@
  */
 package facades;
 
+import entities.InfoEntity;
 import facades.interfaces.PersonFacadeInterface;
 import entities.PersonEntity;
 import errors.code400.ValidationErrorException;
@@ -23,7 +24,17 @@ import javax.persistence.Query;
  */
 public class PersonFacade implements PersonFacadeInterface, CRUDInterface<PersonEntity> {
 
-    EntityManagerControl emc = new EntityManagerControl();
+    EntityManagerControl emc;
+
+    public PersonFacade() {
+        emc = new EntityManagerControl();
+    }
+
+    public PersonFacade(EntityManagerControl emc) {
+        this.emc = emc;
+    }
+    
+    
 
     // ------- CRUD -------- CRUD -------- CRUD -------- CRUD --------
     // CREATE
@@ -48,16 +59,33 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
     }
 
     // READ
-    @Override
-    public PersonEntity read(Long id) {
-    EntityManager em = emc.getEm();
-        PersonEntity p = em.find(PersonEntity.class, id);
-        if (p == null) 
-            throw new PersonNotFoundException();
-        em.close();
-        return p;
+    public InfoEntity rea(Long id) {
+        EntityManager em = emc.getEm();
+        try{
+            InfoEntity p = em.find(InfoEntity.class, id);
+            if (p == null) 
+                throw new PersonNotFoundException();
+            return p;
+        } finally {
+            em.close();
+        }
     }
 
+    
+    // READ
+    @Override
+    public PersonEntity read(Long id) {
+        EntityManager em = emc.getEm();
+        try{
+            PersonEntity p = em.find(PersonEntity.class, id);
+            if (p == null) 
+                throw new PersonNotFoundException();
+            return p;
+        } finally {
+            em.close();
+        }
+    }
+    
     // READ
     @Override
     public PersonEntity read(String id) {
