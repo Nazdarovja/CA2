@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package facades;
 
 import entities.PersonEntity;
@@ -13,6 +8,7 @@ import javax.persistence.Persistence;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import persistence.EntityManagerControl;
 
 /**
  *
@@ -22,36 +18,39 @@ public class PersonFacadeTest {
 
     EntityManagerFactory emf;
     EntityManager em;
+    EntityManagerControl emc;
+    PersonFacade pf;
 
     public PersonFacadeTest() {
     }
 
     @Before
     public void setUp() {
-        emf = Persistence.createEntityManagerFactory("persistenceTEST");
-        em = emf.createEntityManager();
-        Persistence.generateSchema("persistenceTEST", null);
+//        emf = Persistence.createEntityManagerFactory("persistenceTEST");
+//        em = emf.createEntityManager();
+//        Persistence.generateSchema("persistenceTEST", null);
+        emc = new EntityManagerControl();
+        emc.setPersistenceUnitName("persistenceTEST");
+        pf = new PersonFacade();
+        pf.emc = emc;
+
     }
 
-    
     @Test
     public void testCreate() {
         System.out.println("create");
-        PersonEntity object = null;
-        PersonFacade instance = new PersonFacade();
-        PersonEntity expResult = null;
-        PersonEntity result = instance.create(object);
+        PersonEntity object = new PersonEntity("xx", "xx", "test@email.dk");
+        PersonEntity expResult = object;
+        PersonEntity result = pf.create(object);
         assertEquals(expResult, result);
-        fail("The test case is a prototype.");
     }
 
     @Test
     public void testRead_Long() {
         System.out.println("read");
-        Long id = null;
-        PersonFacade instance = new PersonFacade();
+        Long id = 1L;
         PersonEntity expResult = null;
-        PersonEntity result = instance.read(id);
+        PersonEntity result = pf.read(id);
         assertEquals(expResult, result);
         fail("The test case is a prototype.");
     }

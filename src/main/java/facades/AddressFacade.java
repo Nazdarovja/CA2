@@ -24,6 +24,8 @@ public class AddressFacade implements CRUDInterface<AddressEntity> {
     EntityManagerControl emc = new EntityManagerControl();
     DTOFacade dto = new DTOFacade();
 
+    
+    
     @Override
     public AddressEntity create(AddressEntity address) {
         if(address.getStreet().equals(""))
@@ -102,5 +104,7 @@ public class AddressFacade implements CRUDInterface<AddressEntity> {
     public AddressEntity delete(String id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+  
 
 }
