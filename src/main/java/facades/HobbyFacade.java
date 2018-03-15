@@ -5,10 +5,16 @@
  */
 package facades;
 
+import entities.CityInfoEntity;
 import entities.HobbyEntity;
 import entities.PersonEntity;
+import errors.code400.ValidationErrorException;
+import errors.code404.CityNotFoundException;
+import errors.code404.HobbyNotFoundException;
+import errors.code409.AlreadyExistsException;
 import facades.interfaces.CRUDInterface;
 import java.util.List;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import persistence.EntityManagerControl;
@@ -24,12 +30,17 @@ public class HobbyFacade implements CRUDInterface<HobbyEntity> {
     @Override
     public HobbyEntity create(HobbyEntity object) {
         EntityManager em = emc.getEm();
+        if(object.getName().equals("") || object.getDescription().equals(""))
+            throw new ValidationErrorException();
         try {
             em.getTransaction().begin();
             em.persist(object);
             em.getTransaction().commit();
-            //TODO Add Catchblock to catch all RuntimeExceptions from em
-        } finally {
+        } 
+        catch(EntityExistsException ex) {
+            throw new AlreadyExistsException();
+        }
+        finally {
             em.close();
         }
         return object;
@@ -45,8 +56,9 @@ public class HobbyFacade implements CRUDInterface<HobbyEntity> {
         EntityManager em = emc.getEm();
         HobbyEntity h = em.find(HobbyEntity.class, id);
         if (h == null) {
-            //TODO Exception stuffs
+            throw new HobbyNotFoundException();
         }
+        em.close();
         return h;
     }
 
@@ -55,10 +67,7 @@ public class HobbyFacade implements CRUDInterface<HobbyEntity> {
         EntityManager em = emc.getEm();
         Query q = em.createQuery("SELECT h FROM HobbyEntity h");
         List<HobbyEntity> list = (List<HobbyEntity>) q.getResultList();
-
-        if (list.isEmpty()) {
-            //TODO Exception stuffs
-        }
+        em.close();
         return list;
     }
 
@@ -70,17 +79,15 @@ public class HobbyFacade implements CRUDInterface<HobbyEntity> {
     @Override
     public HobbyEntity update(String id, HobbyEntity object) {
         EntityManager em = emc.getEm();
+        if(object.getName().equals("") || object.getDescription().equals(""))
+            throw new ValidationErrorException();
         object.setName(id);
-
-        try {
-            em.getTransaction().begin();
-            //TODO catch exception thrown by .merge() (IllegalArgumentException) if person does not exist in DB
-            em.merge(object);
-            em.getTransaction().commit();
-            //TODO Add Catchblock to catch all RuntimeExceptions from em (convert to appropriate ex)
-        } finally {
-            em.close();
-        }
+        if(em.find(HobbyEntity.class, id) == null)
+            throw new HobbyNotFoundException();
+        em.getTransaction().begin();
+        em.merge(object);
+        em.getTransaction().commit();
+        em.close();
         return object;
     }
 
@@ -93,20 +100,13 @@ public class HobbyFacade implements CRUDInterface<HobbyEntity> {
     public HobbyEntity delete(String id) {
         EntityManager em = emc.getEm();
         HobbyEntity h = em.find(HobbyEntity.class, id);
-        if (h == null) {
-            //TODO throw Exception
-        }
-
-        try {
-            em.getTransaction().begin();
-            em.remove(h);
-            em.getTransaction().commit();
-            //TODO Add Catchblock to catch all RuntimeExceptions from em (convert to appropriate ex)
-        } finally {
-            em.close();
-        }
+        if (h == null) 
+            throw new HobbyNotFoundException();
+        em.getTransaction().begin();
+        em.remove(h);
+        em.getTransaction().commit();
+        em.close();
         return h;
-
     }
 
 }

@@ -6,8 +6,12 @@
 package facades;
 
 import entities.AddressEntity;
+import errors.code400.ValidationErrorException;
+import errors.code404.AddressNotFoundException;
+import errors.code409.AlreadyExistsException;
 import facades.interfaces.CRUDInterface;
 import java.util.List;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import persistence.EntityManagerControl;
 
@@ -22,12 +26,17 @@ public class AddressFacade implements CRUDInterface<AddressEntity> {
 
     @Override
     public AddressEntity create(AddressEntity address) {
-    EntityManager em = emc.getEm();
+        if(address.getStreet().equals(""))
+            throw new ValidationErrorException();
+        EntityManager em = emc.getEm();
         try {
             em.getTransaction().begin();
             em.persist(address);
             em.getTransaction().commit();
         } //CATCH BLOCK //CATCH BLOCK
+        catch(EntityExistsException ex) {
+            throw new AlreadyExistsException();
+        }
         finally {
             em.close();
         }
@@ -36,11 +45,12 @@ public class AddressFacade implements CRUDInterface<AddressEntity> {
 
     @Override
     public AddressEntity read(Long id) {
-    EntityManager em = emc.getEm();
+        EntityManager em = emc.getEm();
         AddressEntity ae = em.find(AddressEntity.class, this);
         if (ae == null) {
-            //ERROR Handling
+            throw new AddressNotFoundException();
         }
+        em.close();
         return ae;
     }
 
@@ -51,22 +61,23 @@ public class AddressFacade implements CRUDInterface<AddressEntity> {
 
     @Override
     public List<AddressEntity> readAll() {
-    EntityManager em = emc.getEm();
+        EntityManager em = emc.getEm();
         return em.createQuery("SELECT a FROM AddressEntity a").getResultList();
     }
 
     @Override
     public AddressEntity update(Long id, AddressEntity object) {
-    EntityManager em = emc.getEm();
+        EntityManager em = emc.getEm();
+        if(object.getStreet().equals(""))
+            throw new ValidationErrorException();
+        if(em.find(AddressEntity.class, id) == null)
+            throw new AddressNotFoundException();
         object.setId(id);
-        try {
-            em.getTransaction().begin();
-            em.merge(object);
-            em.getTransaction().commit();
-            return object;
-        } finally {
-            em.close();
-        }
+        em.getTransaction().begin();
+        em.merge(object);
+        em.getTransaction().commit();
+        em.close();
+        return object;
     }
 
     @Override
@@ -76,16 +87,15 @@ public class AddressFacade implements CRUDInterface<AddressEntity> {
 
     @Override
     public AddressEntity delete(Long id) {
-    EntityManager em = emc.getEm();
-        try {
-            AddressEntity ae = em.find(AddressEntity.class, id);
-            em.getTransaction().begin();
-            em.remove(ae);
-            em.getTransaction().commit();
-            return ae;
-        } finally {
-            em.close();
-        }
+        EntityManager em = emc.getEm();
+        AddressEntity ae = em.find(AddressEntity.class, id);
+        if (ae == null)
+            throw new AddressNotFoundException();
+        em.getTransaction().begin();
+        em.remove(ae);
+        em.getTransaction().commit();
+        em.close();
+        return ae;
     }
 
     @Override
