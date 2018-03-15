@@ -13,7 +13,7 @@ import java.util.List;
  * @author Stanislav
  */
 public interface PersonFacadeInterface {
-    public PersonEntity getPersonByPhoneNumber(Integer number);
+    public PersonEntity getPersonByPhoneNumber(Long number);
     public List<PersonEntity> getAllPersonsByHobby(String hobby);
     public List<PersonEntity> getAllPersonsByCity(String city);
     public List<PersonEntity> getAllPersonsByStreet(String street);
