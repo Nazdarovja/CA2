@@ -117,6 +117,20 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
         em.close();
         return object;
     }
+    // UPDATE
+    public InfoEntity upd(Long id, PersonEntity object) {
+        EntityManager em = emc.getEm();
+        if(object.getFirstName().equals("") || object.getLastName().equals("") || object.getEmail().equals(""))
+            throw new ValidationErrorException();
+        object.setId(id);
+        if(em.find(InfoEntity.class, id) == null) 
+            throw new PersonNotFoundException();
+        em.getTransaction().begin();
+        em.merge(object);
+        em.getTransaction().commit();
+        em.close();
+        return object;
+    }
 
     // UPDATE
     @Override

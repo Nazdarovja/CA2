@@ -1,5 +1,6 @@
 package facades;
 
+import entities.InfoEntity;
 import entities.PersonEntity;
 import java.util.HashMap;
 import java.util.List;
@@ -61,50 +62,27 @@ public class PersonFacadeTest {
         assertEquals(expResult, result);
     }
 
-    //@Test
-    public void testRead_String() {
-        System.out.println("read");
-        String id = "";
-        PersonFacade instance = new PersonFacade();
-        PersonEntity expResult = null;
-        PersonEntity result = instance.read(id);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
-
-    //@Test
+    @Test
     public void testReadAll() {
         System.out.println("readAll");
         PersonFacade instance = new PersonFacade();
-        List<PersonEntity> expResult = null;
+        int expResult = 5;
         List<PersonEntity> result = instance.readAll();
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
+        assertEquals(expResult, result.size());
     }
 
-    //@Test
+    @Test
     public void testUpdate_Long_PersonEntity() {
         System.out.println("update");
-        Long id = null;
-        PersonEntity object = null;
+        Long id = 1L;
+        PersonEntity newObject = new PersonEntity("NEW UPDATED", "PERSON", "new@email.dk");
         PersonFacade instance = new PersonFacade();
-        PersonEntity expResult = null;
-        PersonEntity result = instance.update(id, object);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
+        Long expResult = 1L;
+        InfoEntity result = instance.upd(id, newObject);
+//        assertEquals(expResult., result.getId());
     }
 
-    //@Test
-    public void testUpdate_String_PersonEntity() {
-        System.out.println("update");
-        String id = "";
-        PersonEntity object = null;
-        PersonFacade instance = new PersonFacade();
-        PersonEntity expResult = null;
-        PersonEntity result = instance.update(id, object);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
+
 
     //@Test
     public void testDelete_Long() {
@@ -117,16 +95,7 @@ public class PersonFacadeTest {
         fail("The test case is a prototype.");
     }
 
-    //@Test
-    public void testDelete_String() {
-        System.out.println("delete");
-        String id = "";
-        PersonFacade instance = new PersonFacade();
-        PersonEntity expResult = null;
-        PersonEntity result = instance.delete(id);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
+
 
     //@Test
     public void testGetPersonByPhoneNumber() {
