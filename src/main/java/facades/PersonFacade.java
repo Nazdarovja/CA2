@@ -7,10 +7,14 @@ package facades;
 
 import facades.interfaces.PersonFacadeInterface;
 import entities.PersonEntity;
+import errors.code400.ValidationErrorException;
+import errors.code404.PersonNotFoundException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import persistence.EntityManagerControl;
 import facades.interfaces.CRUDInterface;
+import javax.persistence.EntityExistsException;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 /**
@@ -25,13 +29,19 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
     // CREATE
     @Override
     public PersonEntity create(PersonEntity object) {
-    EntityManager em = emc.getEm();
+        EntityManager em = emc.getEm();
+        if(object.getFirstName().equals("") || object.getLastName().equals("") || object.getEmail().equals(""))
+            throw new ValidationErrorException();
         try {
             em.getTransaction().begin();
             em.persist(object);
             em.getTransaction().commit();
             //TODO Add Catchblock to catch all RuntimeExceptions from em
-        } finally {
+        } 
+        catch(EntityExistsException ex) {
+            throw new PersonNotFoundException();
+        }
+        finally {
             em.close();
         }
         return object;
@@ -42,9 +52,9 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
     public PersonEntity read(Long id) {
     EntityManager em = emc.getEm();
         PersonEntity p = em.find(PersonEntity.class, id);
-        if (p == null) {
-            //TODO Exception stuffs
-        }
+        if (p == null) 
+            throw new PersonNotFoundException();
+        em.close();
         return p;
     }
 
@@ -60,10 +70,7 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
         EntityManager em = emc.getEm();
         Query q = em.createQuery("SELECT p FROM PersonEntity p");
         List<PersonEntity> list = (List<PersonEntity>) q.getResultList();
-
-        if (list.isEmpty()) {
-            //TODO Exception stuffs
-        }
+        em.close();
         return list;
     }
 
@@ -71,17 +78,15 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
     @Override
     public PersonEntity update(Long id, PersonEntity object) {
         EntityManager em = emc.getEm();
+        if(object.getFirstName().equals("") || object.getLastName().equals("") || object.getEmail().equals(""))
+            throw new ValidationErrorException();
         object.setId(id);
-
-        try {
-            em.getTransaction().begin();
-            //TODO catch exception thrown by .merge() (IllegalArgumentException) if person does not exist in DB
-            em.merge(object);
-            em.getTransaction().commit();
-            //TODO Add Catchblock to catch all RuntimeExceptions from em (convert to appropriate ex)
-        } finally {
-            em.close();
-        }
+        if(em.find(PersonEntity.class, id) == null) 
+            throw new PersonNotFoundException();
+        em.getTransaction().begin();
+        em.merge(object);
+        em.getTransaction().commit();
+        em.close();
         return object;
     }
 
@@ -96,18 +101,12 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
     public PersonEntity delete(Long id) {
         EntityManager em = emc.getEm();
         PersonEntity p = em.find(PersonEntity.class, id);
-        if (p == null) {
-            //TODO throw Exception
-        }
-
-        try {
-            em.getTransaction().begin();
-            em.remove(p);
-            em.getTransaction().commit();
-            //TODO Add Catchblock to catch all RuntimeExceptions from em (convert to appropriate ex)
-        } finally {
-            em.close();
-        }
+        if (p == null) 
+            throw new PersonNotFoundException();
+        em.getTransaction().begin();
+        em.remove(p);
+        em.getTransaction().commit();
+        em.close();
         return p;
     }
 
@@ -122,12 +121,16 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
         EntityManager em = emc.getEm();
         Query q = em.createQuery("SELECT p FROM PersonEntity p JOIN p.phones ph WHERE ph.number = :number");
         q.setParameter("number", number);
-        PersonEntity p = (PersonEntity) q.getSingleResult();
-        if (p == null) {
-            //TODO throw Exception
+        try {
+            PersonEntity p = (PersonEntity) q.getSingleResult();
+            return p;
         }
-        return p;
-        //TODO Add Catchblock to catch all RuntimeExceptions from em (convert to appropriate ex)
+        catch(NoResultException ex) {
+            throw new PersonNotFoundException();
+        }
+        finally {
+            em.close();
+        }
     }
 
     @Override
@@ -135,12 +138,7 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
         EntityManager em = emc.getEm();
         Query q = em.createQuery("SELECT p FROM PersonEntity p JOIN p.hobbies h WHERE h.name = :hobby");
         q.setParameter("hobby", hobby);
-        List<PersonEntity> persons = (List<PersonEntity>) q.getResultList();
-        if (persons == null) {
-            //TODO throw Exception
-        }
-        return persons;
-        //TODO Add Catchblock to catch all RuntimeExceptions from em (convert to appropriate ex)
+        return q.getResultList();
     }
 
     @Override
@@ -148,12 +146,7 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
         EntityManager em = emc.getEm();
         Query q = em.createQuery("SELECT p FROM PersonEntity p WHERE p.address.cityInfo.city = :city");
         q.setParameter("city", city);
-        List<PersonEntity> persons = (List<PersonEntity>) q.getResultList();
-        if (persons == null) {
-            //TODO throw Exception
-        }
-        return persons;
-        //TODO Add Catchblock to catch all RuntimeExceptions from em (convert to appropriate ex)
+        return q.getResultList();
     }
 
     @Override
@@ -161,25 +154,15 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
         EntityManager em = emc.getEm();
         Query q = em.createQuery("SELECT p FROM PersonEntity p WHERE p.address.street = :street");
         q.setParameter("street", street);
-        List<PersonEntity> persons = (List<PersonEntity>) q.getResultList();
-        if (persons == null) {
-            //TODO throw Exception
-        }
-        return persons;
-        //TODO Add Catchblock to catch all RuntimeExceptions from em (convert to appropriate ex)
+        return q.getResultList();
     }
 
     @Override
     public Integer getPersonCountByHobby(String hobby) {
         EntityManager em = emc.getEm();
-        Long res;
         Query q = em.createQuery("SELECT COUNT(p.id) FROM PersonEntity p JOIN p.hobbies h WHERE h.name = :hobby");
         q.setParameter("hobby", hobby);
-        res = (Long) q.getSingleResult(); // TOFIX Somehow this returns Long when SQL documentation says it should return int (magic)
-        if (res == null) {
-            //TODO Throw approp. Exception
-        }
-        return res.intValue();
+        return((Long) q.getSingleResult()).intValue(); 
     }
 
 }

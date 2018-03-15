@@ -58,10 +58,6 @@ public class CityInfoEntity implements Serializable {
     public void setAddresses(List<AddressEntity> addresses) {
         this.addresses = addresses;
     }
-    
-    public String getId() {
-        return zipCode;
-    }
 
     public void setId(String id) {
         this.zipCode = id;

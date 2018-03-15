@@ -5,11 +5,18 @@
  */
 package facades;
 
+import entities.CityInfoEntity;
 import entities.CompanyEntity;
+import errors.code400.ValidationErrorException;
+import errors.code404.CityNotFoundException;
+import errors.code404.CompanyNotFoundException;
+import errors.code409.AlreadyExistsException;
 import facades.interfaces.CompanyFacadeInterface;
 import java.util.List;
 import facades.interfaces.CRUDInterface;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import persistence.EntityManagerControl;
 
@@ -27,8 +34,14 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
         EntityManager em = emc.getEm();
         Query query = em.createQuery("SELECT p from PersonEntity p JOIN p.phones ph WHERE ph.number = :number");
         query.setParameter("number", phoneNumber);
-        return (CompanyEntity) query.getSingleResult();
-        //TODO ErrorHandling
+        try {
+            CompanyEntity ce = (CompanyEntity) query.getSingleResult();
+            em.close();
+            return ce; 
+        }
+        catch(NoResultException ex) {
+            throw new CompanyNotFoundException();
+        }
     }
 
     @Override
@@ -37,8 +50,6 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
         Query query = em.createQuery("SELECT count(c.id) from CompanyEntity c WHERE c.address.cityInfo.zipCode = :zipcode");
         query.setParameter("zipcode", zipcode);
         return (int) query.getSingleResult();
-        //TODO ErrorHandling
-
     }
 
     @Override
@@ -47,7 +58,7 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
         Query query = em.createQuery("SELECT c from CompanyEntity c WHERE c.marketValue > :marketValue");
         query.setParameter("marketValue", marketValue);
         return query.getResultList();
-        //TODO ErrorHandling
+        
     }
 
     @Override
@@ -56,7 +67,6 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
         Query query = em.createQuery("SELECT count(c.id) from CompanyEntity c WHERE c.numEmployees < :numEmployees");
         query.setParameter("numEmployees", numEmployees);
         return (int) query.getSingleResult();
-        //TODO ErrorHandling
     }
 
     // ------- CRUD -------- CRUD -------- CRUD -------- CRUD --------
@@ -64,12 +74,18 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
     @Override
     public CompanyEntity create(CompanyEntity object) {
         EntityManager em = emc.getEm();
+        if(object.getName().equals("") || object.getCvr() == 0)
+            throw new ValidationErrorException();
         try {
             em.getTransaction().begin();
             em.persist(object);
             em.getTransaction().commit();
             //TODO Add Catchblock to catch all RuntimeExceptions from em
-        } finally {
+        }
+        catch(EntityExistsException ex) {
+            throw new AlreadyExistsException();
+        }
+        finally {
             em.close();
         }
         return object;
@@ -81,8 +97,9 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
         EntityManager em = emc.getEm();
         CompanyEntity c = em.find(CompanyEntity.class, id);
         if (c == null) {
-            //TODO Exception stuffs
+            throw new CompanyNotFoundException();
         }
+        em.close();
         return c;
     }
 
@@ -98,10 +115,7 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
         EntityManager em = emc.getEm();
         Query q = em.createQuery("SELECT c FROM CompanyEntity c");
         List<CompanyEntity> list = (List<CompanyEntity>) q.getResultList();
-
-        if (list.isEmpty()) {
-            //TODO Exception stuffs
-        }
+        em.close();
         return list;
     }
 
@@ -110,16 +124,14 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
     public CompanyEntity update(Long id, CompanyEntity object) {
         EntityManager em = emc.getEm();
         object.setId(id);
-
-        try {
-            em.getTransaction().begin();
-            //TODO catch exception thrown by .merge() (IllegalArgumentException) if person does not exist in DB
-            em.merge(object);
-            em.getTransaction().commit();
-            //TODO Add Catchblock to catch all RuntimeExceptions from em (convert to appropriate ex)
-        } finally {
-            em.close();
-        }
+        if(object.getName().equals("") || object.getCvr() == 0)
+            throw new ValidationErrorException();
+         if(em.find(CompanyEntity.class, id) == null)
+            throw new CompanyNotFoundException();
+        em.getTransaction().begin();
+        em.merge(object);
+        em.getTransaction().commit();
+        em.close();
         return object;
     }
 
@@ -134,18 +146,12 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
     public CompanyEntity delete(Long id) {
         EntityManager em = emc.getEm();
         CompanyEntity c = em.find(CompanyEntity.class, id);
-        if (c == null) {
-            //TODO throw Exception
-        }
-
-        try {
-            em.getTransaction().begin();
-            em.remove(c);
-            em.getTransaction().commit();
-            //TODO Add Catchblock to catch all RuntimeExceptions from em (convert to appropriate ex)
-        } finally {
-            em.close();
-        }
+        if (c == null) 
+            throw new CompanyNotFoundException();
+        em.getTransaction().begin();
+        em.remove(c);
+        em.getTransaction().commit();
+        em.close();
         return c;
     }
 

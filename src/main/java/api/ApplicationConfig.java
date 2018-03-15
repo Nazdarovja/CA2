@@ -34,6 +34,7 @@ public class ApplicationConfig extends Application {
         resources.add(api.testdataRessource.class);
         resources.add(errors.code400.ValidationErrorExceptionMapper.class);
         resources.add(errors.code404.NotFoundExceptionMapper.class);
+        resources.add(errors.code409.AlreadyExistsExceptionMapper.class);
         resources.add(errors.code500.GenericExceptionMapper.class);
     }
 
