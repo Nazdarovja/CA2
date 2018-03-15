@@ -17,12 +17,12 @@ import persistence.EntityManagerControl;
  */
 public class PhoneFacade implements CRUDInterface<PhoneEntity> {
 
-    EntityManagerControl emc = new EntityManagerControl("persistence");
-    EntityManager em = emc.getEm();
+    EntityManagerControl emc = new EntityManagerControl();
     DTOFacade dto = new DTOFacade();
-    
+
     @Override
     public PhoneEntity create(PhoneEntity phone) {
+        EntityManager em = emc.getEm();
         try {
             em.getTransaction().begin();
             em.persist(phone);
@@ -36,8 +36,9 @@ public class PhoneFacade implements CRUDInterface<PhoneEntity> {
 
     @Override
     public PhoneEntity read(Long id) {
+        EntityManager em = emc.getEm();
         PhoneEntity pe = em.find(PhoneEntity.class, this);
-        if(pe == null) {
+        if (pe == null) {
             //ERROR Handling
         }
         return pe;
@@ -50,19 +51,20 @@ public class PhoneFacade implements CRUDInterface<PhoneEntity> {
 
     @Override
     public List<PhoneEntity> readAll() {
+        EntityManager em = emc.getEm();
         return em.createQuery("SELECT p FROM PhoneEntity p").getResultList();
     }
 
     @Override
     public PhoneEntity update(Long id, PhoneEntity object) {
+        EntityManager em = emc.getEm();
         object.setId(id);
         try {
             em.getTransaction().begin();
             em.merge(object);
             em.getTransaction().commit();
             return object;
-        } 
-        finally {
+        } finally {
             em.close();
         }
     }
@@ -74,14 +76,14 @@ public class PhoneFacade implements CRUDInterface<PhoneEntity> {
 
     @Override
     public PhoneEntity delete(Long id) {
+        EntityManager em = emc.getEm();
         try {
             PhoneEntity pe = em.find(PhoneEntity.class, id);
             em.getTransaction().begin();
             em.remove(pe);
             em.getTransaction().commit();
             return pe;
-        }
-        finally {
+        } finally {
             em.close();
         }
     }
@@ -91,5 +93,4 @@ public class PhoneFacade implements CRUDInterface<PhoneEntity> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    
 }

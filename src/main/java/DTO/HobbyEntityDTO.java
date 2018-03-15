@@ -15,9 +15,9 @@ public class HobbyEntityDTO implements JSONDTO<HobbyEntity>{
     private String name;
     private String description;
 
-    public HobbyEntityDTO(String name, String description) {
-        this.name = name;
-        this.description = description;
+    public HobbyEntityDTO(HobbyEntity he) {
+        this.name = he.getName();
+        this.description = he.getDescription();
     }
         
     @Override
