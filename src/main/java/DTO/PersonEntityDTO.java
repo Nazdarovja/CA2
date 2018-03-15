@@ -7,6 +7,9 @@ package DTO;
 
 import entities.HobbyEntity;
 import entities.PersonEntity;
+import facades.AddressFacade;
+import facades.HobbyFacade;
+import facades.PhoneFacade;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,28 +22,46 @@ public class PersonEntityDTO implements JSONDTO<PersonEntity> {
     private String firstName;
     private String lastName;
     private String email;
+    private AddressEntityDTO address;
+    private List<PhoneEntityDTO> phoneNumbers = new ArrayList();
     private List<HobbyEntityDTO> hobbyDTOs = new ArrayList();
 
     //TODO: Simpel representation.
     public PersonEntityDTO(PersonEntity p) {
-        
+
         this.firstName = p.getFirstName();
         this.lastName = p.getLastName();
         this.email = p.getEmail();
         p.getHobbies().forEach((h) -> {
             this.hobbyDTOs.add(new HobbyEntityDTO(h));
         });
+        this.address = new AddressEntityDTO(p.getAddress());
+        p.getPhones().forEach((pn) -> {
+            this.phoneNumbers.add(new PhoneEntityDTO(pn));
+        });
     }
 
     @Override
     public PersonEntity toInternal() {
-        PersonEntity p = new PersonEntity(firstName,lastName,email);
-        
-        //TOFIX lidt i tvivl om hvordan vi skal få fat i de rigtige objekter her
+        PersonEntity p = new PersonEntity(firstName, lastName, email);
+        AddressFacade af = new AddressFacade();
+        HobbyFacade hf = new HobbyFacade();
+        PhoneFacade pf = new PhoneFacade();
+
+        //TOFIX in doubt if these are the right object representations, as they lack the bidirectional relationships.
+        p.setAddress(af.read(address.getId()));
+
         List<HobbyEntity> hobbies = new ArrayList();
-        // ADD MAGIC HERE ! :D 
-        
+        hobbyDTOs.forEach((h) -> {
+            hobbies.add(hf.read(h.getName()));
+        });
         p.setHobbies(hobbies);
+
+        List<PhoneEntity> phones = new ArrayList();
+        this.phoneNumbers.forEach((pn) -> {
+            phones.add(pf.read(pn.getNumber()));
+        });
+        p.setPhones(phones);
         return p;
     }
 

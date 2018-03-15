@@ -21,6 +21,10 @@ public class HobbyEntityDTO implements JSONDTO<HobbyEntity> {
         this.description = he.getDescription();
     }
 
+    public String getName() {
+        return name;
+    }
+
 
     @Override
     public HobbyEntity toInternal() {
