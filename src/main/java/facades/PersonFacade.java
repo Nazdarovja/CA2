@@ -98,6 +98,9 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
         EntityManager em = emc.getEm();
         Query q = em.createQuery("SELECT p FROM PersonEntity p");
         List<PersonEntity> list = (List<PersonEntity>) q.getResultList();
+        for (PersonEntity personEntity : list) {
+            System.out.println(personEntity);
+        }
         em.close();
         return list;
     }
