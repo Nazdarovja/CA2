@@ -6,6 +6,7 @@
 package DTO;
 
 import entities.AddressEntity;
+import java.math.BigInteger;
 
 /**
  *
