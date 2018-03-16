@@ -8,7 +8,6 @@ package DTO;
 import entities.HobbyEntity;
 import entities.PersonEntity;
 import entities.PhoneEntity;
-import facades.AddressFacade;
 import facades.HobbyFacade;
 import facades.PhoneFacade;
 import java.util.ArrayList;
@@ -66,13 +65,7 @@ public class PersonEntityDTO implements JSONDTO<PersonEntity> {
 
         List<PhoneEntity> phones = new ArrayList();
         phoneNumbers.forEach((pn) -> {
-            PhoneEntity temp = phoneFacade.read(pn.getNumber());
-            if (temp == null) {
-                temp = phoneFacade.create(pn.toInternal());
-                phones.add(temp);
-            } else {
-                phones.add(temp);
-            }
+            phones.add(pn.toInternal());
         });
         p.setPhones(phones);
         return p;

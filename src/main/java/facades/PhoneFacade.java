@@ -46,7 +46,19 @@ public class PhoneFacade implements CRUDInterface<PhoneEntity> {
     public PhoneEntity read(Long id) {
         EntityManager em = emc.getEm();
         PhoneEntity pe = em.find(PhoneEntity.class, id);
+        if (pe == null) {
+            throw new PhoneNotFoundException();
+        }
         return pe;
+    }
+
+    public boolean checkIfExist(Long id) {
+        EntityManager em = emc.getEm();
+        PhoneEntity pe = em.find(PhoneEntity.class, id);
+        if (pe != null) {
+            throw new AlreadyExistsException();
+        }
+        return true;
     }
 
     @Override
