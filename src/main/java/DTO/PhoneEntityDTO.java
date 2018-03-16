@@ -13,8 +13,8 @@ import entities.PhoneEntity;
  */
 public class PhoneEntityDTO implements JSONDTO<PhoneEntity> {
 
-    public Long number;
-    public String description;
+    private Long number;
+    private String description;
 
     public PhoneEntityDTO(PhoneEntity p) {
         this.number = p.getNumber();

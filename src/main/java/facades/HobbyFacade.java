@@ -55,9 +55,6 @@ public class HobbyFacade implements CRUDInterface<HobbyEntity> {
     public HobbyEntity read(String id) {
         EntityManager em = emc.getEm();
         HobbyEntity h = em.find(HobbyEntity.class, id);
-        if (h == null) {
-            throw new HobbyNotFoundException();
-        }
         em.close();
         return h;
     }

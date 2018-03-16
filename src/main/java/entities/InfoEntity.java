@@ -34,25 +34,26 @@ public abstract class InfoEntity implements Serializable {
     private Long id;
     private String email;
 
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinColumn(name = "infoentityid")
     private List<PhoneEntity> phones = new ArrayList<>();
-    
+
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name="ADDRESSID")
+    @JoinColumn(name = "ADDRESSID")
     private AddressEntity address;
-    
+
     public InfoEntity() {
     }
-    
+
     public InfoEntity(String email) {
         this.email = email;
     }
-    
-    public void addAddress(AddressEntity a){
+
+    public void addAddress(AddressEntity a) {
         this.address = a;
         a.getInfoEntities().add(this);
     }
+
     public AddressEntity getAddress() {
         return address;
     }
@@ -60,7 +61,7 @@ public abstract class InfoEntity implements Serializable {
     public void setAddress(AddressEntity address) {
         this.address = address;
     }
-    
+
     public List<PhoneEntity> getPhones() {
         return phones;
     }
@@ -68,7 +69,7 @@ public abstract class InfoEntity implements Serializable {
     public void setPhones(List<PhoneEntity> phones) {
         this.phones = phones;
     }
-    
+
     public String getEmail() {
         return email;
     }
@@ -76,7 +77,7 @@ public abstract class InfoEntity implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -109,5 +110,5 @@ public abstract class InfoEntity implements Serializable {
     public String toString() {
         return "InfoEntity{" + "id=" + id + ", email=" + email + '}';
     }
-    
+
 }

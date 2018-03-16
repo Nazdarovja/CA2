@@ -27,17 +27,16 @@ public class PhoneFacade implements CRUDInterface<PhoneEntity> {
     @Override
     public PhoneEntity create(PhoneEntity phone) {
         EntityManager em = emc.getEm();
-        if(phone.getNumber() == 0L || phone.getDescription().equals(""))
+        if (phone.getNumber() == 0L) {
             throw new ValidationErrorException();
+        }
         try {
             em.getTransaction().begin();
             em.persist(phone);
             em.getTransaction().commit();
-        } 
-        catch(EntityExistsException ex) {
+        } catch (EntityExistsException ex) {
             throw new AlreadyExistsException();
-        }
-        finally {
+        } finally {
             em.close();
         }
         return phone;
@@ -47,9 +46,6 @@ public class PhoneFacade implements CRUDInterface<PhoneEntity> {
     public PhoneEntity read(Long id) {
         EntityManager em = emc.getEm();
         PhoneEntity pe = em.find(PhoneEntity.class, id);
-        if (pe == null) {
-            throw new PhoneNotFoundException();
-        }
         return pe;
     }
 
@@ -67,11 +63,13 @@ public class PhoneFacade implements CRUDInterface<PhoneEntity> {
     @Override
     public PhoneEntity update(Long id, PhoneEntity object) {
         EntityManager em = emc.getEm();
-        if(object.getNumber() == 0L || object.getDescription().equals(""))
+        if (object.getNumber() == 0L || object.getDescription().equals("")) {
             throw new ValidationErrorException();
+        }
         object.setId(id);
-        if(em.find(PhoneEntity.class, id) == null) 
+        if (em.find(PhoneEntity.class, id) == null) {
             throw new PhoneNotFoundException();
+        }
         em.getTransaction().begin();
         em.merge(object);
         em.getTransaction().commit();
@@ -88,8 +86,9 @@ public class PhoneFacade implements CRUDInterface<PhoneEntity> {
     public PhoneEntity delete(Long id) {
         EntityManager em = emc.getEm();
         PhoneEntity pe = em.find(PhoneEntity.class, id);
-        if(pe == null) 
+        if (pe == null) {
             throw new PhoneNotFoundException();
+        }
         em.getTransaction().begin();
         em.remove(pe);
         em.getTransaction().commit();

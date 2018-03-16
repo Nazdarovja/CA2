@@ -45,29 +45,36 @@ public class PersonEntityDTO implements JSONDTO<PersonEntity> {
     @Override
     public PersonEntity toInternal() {
         PersonEntity p = new PersonEntity(firstName, lastName, email);
-        AddressFacade af = new AddressFacade();
-        HobbyFacade hf = new HobbyFacade();
-        PhoneFacade pf = new PhoneFacade();
+        HobbyFacade hobbyFacade = new HobbyFacade();
+        PhoneFacade phoneFacade = new PhoneFacade();
 
         //TOFIX in doubt if these are the right object representations, as they lack the bidirectional relationships.
         p.setAddress(address.toInternal());
 
-//        List<HobbyEntity> hobbies = new ArrayList();
-//        hobbyDTOs.forEach((h) -> {
-//            hobbies.add(hf.read(h.getName()));
-//        });
-//        
-//        p.setHobbies(hobbies);
-//        List<PhoneEntity> phones = new ArrayList();
-//        phoneNumbers.forEach((pn) -> {
-//            PhoneEntity temp = pf.read(pn.getNumber());
-//            if(temp != null){
-//            phones.add(temp);
-//            } else {
-//                phones.add(pn.toInternal());
-//            }
-//        });
-//        p.setPhones(phones);
+        List<HobbyEntity> hobbies = new ArrayList();
+        hobbyDTOs.forEach((h) -> {
+            HobbyEntity he = hobbyFacade.read(h.getName());
+            if (he == null) {
+                he = hobbyFacade.create(h.toInternal());
+                hobbies.add(he);
+            } else {
+                hobbies.add(he);
+            }
+        });
+        p.setHobbies(hobbies);
+
+        List<PhoneEntity> phones = new ArrayList();
+        phoneNumbers.forEach((pn) -> {
+            PhoneEntity temp = phoneFacade.read(pn.getNumber());
+            if (temp == null) {
+                temp = phoneFacade.create(pn.toInternal());
+                phones.add(temp);
+            } else {
+                phones.add(temp);
+            }
+        });
+        p.setPhones(phones);
+
         return p;
     }
 
