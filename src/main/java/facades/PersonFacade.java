@@ -64,7 +64,6 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
         EntityManager em = emc.getEm();
         try{
             InfoEntity p = em.find(InfoEntity.class, id);
-            System.out.println(p);
             if (p == null || !(p instanceof PersonEntity)) 
                 throw new PersonNotFoundException();
             return (PersonEntity)p;

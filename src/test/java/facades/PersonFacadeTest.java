@@ -29,11 +29,11 @@ public class PersonFacadeTest {
 
     }
 
-//    @Test
+    @Test
     public void testRead_Long() {
         System.out.println("read");
-        Long id = 13L;
-        Long expResult = 13L;
+        Long id = 1L;
+        Long expResult = 1L;
         Long result = pf.read(id).getId();
         assertEquals(expResult, result);
     }
