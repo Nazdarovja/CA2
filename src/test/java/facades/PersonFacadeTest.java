@@ -84,15 +84,20 @@ public class PersonFacadeTest {
         assertEquals(expResult, result);
     }
 
-    //@Test
+    @Test
     public void testGetAllPersonsByHobby() {
         System.out.println("getAllPersonsByHobby");
-        String hobby = "";
-        PersonFacade instance = new PersonFacade();
-        List<PersonEntity> expResult = null;
-        List<PersonEntity> result = instance.getAllPersonsByHobby(hobby);
+        int expResult = 3;
+        List<PersonEntity> list = pf.getAllPersonsByHobby("floorball");
+        int result = list.size();
+        Long expPersId1 = 12L;
+        Long expPersId2 = 13L;
+        Long expPersId3 = 18L;
+        
+        assertEquals(expPersId1, list.get(0).getId());
+        assertEquals(expPersId2, list.get(1).getId());
+        assertEquals(expPersId3, list.get(2).getId());
         assertEquals(expResult, result);
-        fail("The test case is a prototype.");
     }
 
     //@Test
