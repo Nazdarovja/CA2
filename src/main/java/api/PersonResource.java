@@ -50,7 +50,9 @@ public class PersonResource {
     @Produces(MediaType.APPLICATION_JSON)
     public String createPerson(String message) {
         PersonEntity p = dto.fromJson(message, PersonEntityDTO.class);
+        System.out.println("before");
         p = pf.create(p);
+        System.out.println("after");
         PersonEntityDTO pDTO = new PersonEntityDTO(p);
         return dto.DTOtoJson(pDTO);
     }
