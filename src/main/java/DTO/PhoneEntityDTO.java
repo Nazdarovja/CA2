@@ -21,6 +21,10 @@ public class PhoneEntityDTO implements JSONDTO<PhoneEntity> {
         this.description = p.getDescription();
     }
 
+    public Long getNumber() {
+        return number;
+    }
+
     @Override
     public PhoneEntity toInternal() {
         return new PhoneEntity(number, description);

@@ -25,8 +25,8 @@ public class CompanyFacadeTest {
     }
 
     @Test
-    public void testGetCompanyByPhoneNumberJSON() {
-        System.out.println("getCompanyByPhoneNumberJSON");
+    public void testGetCompanyByPhoneNumber() {
+        System.out.println("getCompanyByPhoneNumber");
         Long phoneNumber = null;
         CompanyFacade instance = new CompanyFacade();
         CompanyEntity expResult = null;

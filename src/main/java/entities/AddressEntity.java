@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +31,7 @@ public class AddressEntity implements Serializable {
     private Long id;
     private String street;
     private String additionalInfo;
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "address")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "address", fetch = FetchType.EAGER)
     private List<InfoEntity> infoEntities = new ArrayList<>();
 
     @ManyToOne
@@ -40,6 +41,24 @@ public class AddressEntity implements Serializable {
     public AddressEntity() {
     }
 
+    public AddressEntity(Long id, String street, String additionalInfo) {
+        this.id = id;
+        this.street = street;
+        this.additionalInfo = additionalInfo;
+    }
+
+    public AddressEntity(Long id, String street, String additionalInfo, CityInfoEntity cityInfo) {
+        this.id = id;
+        this.street = street;
+        this.additionalInfo = additionalInfo;
+        this.cityInfo = cityInfo;
+    }
+    
+    public void addCityEntity(CityInfoEntity cie){
+        this.cityInfo = cie;
+        cie.getAddresses().add(this);
+    }
+    
     public CityInfoEntity getCityInfo() {
         return cityInfo;
     }

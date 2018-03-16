@@ -57,7 +57,7 @@ public class CompanyResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public String getCompany(@PathParam("id") Long id) {
+    public String getCompany(@PathParam("id")Long id) {
         CompanyEntity company = cf.read(id);
         return dto.DTOtoJson(new CompanyEntityDTO(company));
     }
@@ -77,7 +77,7 @@ public class CompanyResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public String updateCompany(@PathParam("id") Long id, String message) {
+    public String updateCompany(@PathParam("id")Long id, String message) {
         CompanyEntity c = dto.fromJson(message, CompanyEntityDTO.class);
         c = cf.update(id, c);
         return dto.DTOtoJson(new CompanyEntityDTO(c));
@@ -87,7 +87,7 @@ public class CompanyResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public String deleteCompany(@PathParam("id") Long id) {
+    public String deleteCompany(@PathParam("id")Long id) {
         //Deletes and returns company if needed for display
         CompanyEntity c = cf.delete(id);
         return dto.DTOtoJson(new CompanyEntityDTO(c));
@@ -96,7 +96,7 @@ public class CompanyResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/phonenumber/{number}")
-    public String getCompanyByPhoneNumber(@PathParam("number") Long number) {
+    public String getCompanyByPhoneNumber(@PathParam("number")Long number) {
         CompanyEntity c = cf.getCompanyByPhoneNumber(number);
         return dto.DTOtoJson(new CompanyEntityDTO(c));
     }
@@ -104,7 +104,7 @@ public class CompanyResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/countbyzipcode/{zipcode}")
-    public String getCompanyCountByZipcode(@PathParam("zipcode") String zipcode) {
+    public String getCompanyCountByZipcode(@PathParam("zipcode")String zipcode) {
         Integer count = cf.getCompanyCountByZipCode(zipcode);
         return dto.DTOtoJson(new CountDTO(count));
     }
@@ -112,7 +112,7 @@ public class CompanyResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/marketvalueabove/{marketValue}")
-    public String getCompaniesByMarketValueAbove(@PathParam("marketValue") Long marketValue) {
+    public String getCompaniesByMarketValueAbove(@PathParam("marketValue")Long marketValue) {
         List<CompanyEntity> companies = cf.getCompaniesByMarketValueAbove(marketValue);
         List<JSONDTO> companiesDTO = new ArrayList();
         companies.forEach((companyEntity) -> {
@@ -124,7 +124,7 @@ public class CompanyResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/countbynumemployeesbelow/{numEmployees}")
-    public String getCompanyCountByNumEmployeesBelow(@PathParam("numEmployees") Integer numEmployees) {
+    public String getCompanyCountByNumEmployeesBelow(@PathParam("numEmployees")Integer numEmployees) {
         Integer count = cf.getCompanyCountByNumEmployeesBelow(numEmployees);
         return dto.DTOtoJson(new CountDTO(count));
     }

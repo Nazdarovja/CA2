@@ -15,11 +15,7 @@ import javax.persistence.Persistence;
  */
 public class EntityManagerControl {
 
-    EntityManagerFactory emf;
-
-    public EntityManagerControl() {
-        this.emf = Persistence.createEntityManagerFactory("persistence");
-    }
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("persistence");;
 
     public EntityManager getEm() {
         return emf.createEntityManager();

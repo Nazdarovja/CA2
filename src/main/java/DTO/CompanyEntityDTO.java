@@ -6,6 +6,8 @@
 package DTO;
 
 import entities.CompanyEntity;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -13,18 +15,24 @@ import entities.CompanyEntity;
  */
 public class CompanyEntityDTO implements JSONDTO<CompanyEntity> {
 
-    public String name;
-    public String description;
-    public int cvr;
-    public int numEmployees;
-    public long marketValue;
+    private String name;
+    private String description;
+    private int cvr;
+    private int numEmployees;
+    private long marketValue;
+    private AddressEntityDTO address;
+    private List<PhoneEntityDTO> phoneNumbers = new ArrayList();
 
     public CompanyEntityDTO(CompanyEntity c) {
         this.name = c.getName();
         this.description = c.getDescription();
         this.cvr = c.getCvr();
+        this.address = new AddressEntityDTO(c.getAddress());
         this.numEmployees = c.getNumEmployees();
         this.marketValue = c.getMarketValue();
+        c.getPhones().forEach((p) -> {
+            phoneNumbers.add(new PhoneEntityDTO(p));
+        });
     }
 
     @Override

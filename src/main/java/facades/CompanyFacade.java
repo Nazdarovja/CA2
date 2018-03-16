@@ -137,7 +137,8 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
         EntityManager em = emc.getEm();
         Query query = em.createQuery("SELECT count(c.id) from CompanyEntity c WHERE c.address.cityInfo.zipCode = :zipcode");
         query.setParameter("zipcode", zipcode);
-        return (int) query.getSingleResult();
+        Long res = (Long) query.getSingleResult();
+        return res.intValue();
         //TODO ErrorHandling
 
     }

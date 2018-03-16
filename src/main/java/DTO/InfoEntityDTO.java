@@ -16,8 +16,8 @@ import java.util.List;
  */
 public class InfoEntityDTO implements JSONDTO<InfoEntity> {
 
-    public String email;
-    public List<PhoneEntity> phones = new ArrayList();
+    private String email;
+    private List<PhoneEntity> phones = new ArrayList();
 
     public InfoEntityDTO(InfoEntity e) {
         this.email = e.getEmail();

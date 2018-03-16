@@ -14,17 +14,25 @@ import java.math.BigInteger;
  */
 public class AddressEntityDTO implements JSONDTO<AddressEntity> {
 
-    public String street;
-    public String additionalInfo;
+    private Long id; // used for toInternal() and discarded when displayed in javascript later on.
+    private String street;
+    private String additionalInfo;
+    private CityInfoEntityDTO cityInfo;
 
     public AddressEntityDTO(AddressEntity a) {
+        this.id = a.getId();
         this.street = a.getStreet();
         this.additionalInfo = a.getAdditionalInfo();
+        this.cityInfo = new CityInfoEntityDTO(a.getCityInfo());
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Override
     public AddressEntity toInternal() {
-        return new AddressEntity(street, additionalInfo);
+        return new AddressEntity(id, street, additionalInfo, cityInfo.toInternal());
     }
 
 }

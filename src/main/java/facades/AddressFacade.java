@@ -24,22 +24,20 @@ public class AddressFacade implements CRUDInterface<AddressEntity> {
     EntityManagerControl emc = new EntityManagerControl();
     DTOFacade dto = new DTOFacade();
 
-    
-    
     @Override
     public AddressEntity create(AddressEntity address) {
-        if(address.getStreet().equals(""))
+        if (address.getStreet().equals("")) {
             throw new ValidationErrorException();
+        }
         EntityManager em = emc.getEm();
         try {
             em.getTransaction().begin();
             em.persist(address);
             em.getTransaction().commit();
         } //CATCH BLOCK //CATCH BLOCK
-        catch(EntityExistsException ex) {
+        catch (EntityExistsException ex) {
             throw new AlreadyExistsException();
-        }
-        finally {
+        } finally {
             em.close();
         }
         return address;
@@ -70,10 +68,12 @@ public class AddressFacade implements CRUDInterface<AddressEntity> {
     @Override
     public AddressEntity update(Long id, AddressEntity object) {
         EntityManager em = emc.getEm();
-        if(object.getStreet().equals(""))
+        if (object.getStreet().equals("")) {
             throw new ValidationErrorException();
-        if(em.find(AddressEntity.class, id) == null)
+        }
+        if (em.find(AddressEntity.class, id) == null) {
             throw new AddressNotFoundException();
+        }
         object.setId(id);
         em.getTransaction().begin();
         em.merge(object);
@@ -91,8 +91,9 @@ public class AddressFacade implements CRUDInterface<AddressEntity> {
     public AddressEntity delete(Long id) {
         EntityManager em = emc.getEm();
         AddressEntity ae = em.find(AddressEntity.class, id);
-        if (ae == null)
+        if (ae == null) {
             throw new AddressNotFoundException();
+        }
         em.getTransaction().begin();
         em.remove(ae);
         em.getTransaction().commit();
@@ -104,7 +105,5 @@ public class AddressFacade implements CRUDInterface<AddressEntity> {
     public AddressEntity delete(String id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-  
 
 }

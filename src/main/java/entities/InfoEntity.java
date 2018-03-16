@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,6 +34,25 @@ public abstract class InfoEntity implements Serializable {
     private Long id;
     private String email;
 
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JoinColumn(name = "infoentityid")
+    private List<PhoneEntity> phones = new ArrayList<>();
+    
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name="ADDRESSID")
+    private AddressEntity address;
+    
+    public InfoEntity() {
+    }
+    
+    public InfoEntity(String email) {
+        this.email = email;
+    }
+    
+    public void addAddress(AddressEntity a){
+        this.address = a;
+        a.getInfoEntities().add(this);
+    }
     public AddressEntity getAddress() {
         return address;
     }
@@ -40,21 +60,7 @@ public abstract class InfoEntity implements Serializable {
     public void setAddress(AddressEntity address) {
         this.address = address;
     }
-    @OneToMany(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "infoentityid")
-    private List<PhoneEntity> phones = new ArrayList<>();
-    @ManyToOne
-    @JoinColumn(name="ADDRESSID")
-    private AddressEntity address;
     
-    public InfoEntity() {
-        
-    }
-    
-    public InfoEntity(String email) {
-        this.email = email;
-    }
-
     public List<PhoneEntity> getPhones() {
         return phones;
     }

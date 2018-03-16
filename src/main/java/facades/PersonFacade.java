@@ -7,12 +7,14 @@ package facades;
 
 import facades.interfaces.PersonFacadeInterface;
 import entities.PersonEntity;
+import entities.PhoneEntity;
 import errors.code400.ValidationErrorException;
 import errors.code404.PersonNotFoundException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import persistence.EntityManagerControl;
 import facades.interfaces.CRUDInterface;
+import java.util.ArrayList;
 import javax.persistence.EntityExistsException;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -30,18 +32,17 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
     @Override
     public PersonEntity create(PersonEntity object) {
         EntityManager em = emc.getEm();
-        if(object.getFirstName().equals("") || object.getLastName().equals("") || object.getEmail().equals(""))
+        if (object.getFirstName().equals("") || object.getLastName().equals("") || object.getEmail().equals("")) {
             throw new ValidationErrorException();
+        }
         try {
             em.getTransaction().begin();
             em.persist(object);
             em.getTransaction().commit();
             //TODO Add Catchblock to catch all RuntimeExceptions from em
-        } 
-        catch(EntityExistsException ex) {
+        } catch (EntityExistsException ex) {
             throw new PersonNotFoundException();
-        }
-        finally {
+        } finally {
             em.close();
         }
         return object;
@@ -50,10 +51,12 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
     // READ
     @Override
     public PersonEntity read(Long id) {
-    EntityManager em = emc.getEm();
+        EntityManager em = emc.getEm();
         PersonEntity p = em.find(PersonEntity.class, id);
-        if (p == null) 
+        if (p == null) {
             throw new PersonNotFoundException();
+        }
+        System.out.println(p.getPhones());
         em.close();
         return p;
     }
@@ -78,11 +81,13 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
     @Override
     public PersonEntity update(Long id, PersonEntity object) {
         EntityManager em = emc.getEm();
-        if(object.getFirstName().equals("") || object.getLastName().equals("") || object.getEmail().equals(""))
+        if (object.getFirstName().equals("") || object.getLastName().equals("") || object.getEmail().equals("")) {
             throw new ValidationErrorException();
+        }
         object.setId(id);
-        if(em.find(PersonEntity.class, id) == null) 
+        if (em.find(PersonEntity.class, id) == null) {
             throw new PersonNotFoundException();
+        }
         em.getTransaction().begin();
         em.merge(object);
         em.getTransaction().commit();
@@ -101,8 +106,9 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
     public PersonEntity delete(Long id) {
         EntityManager em = emc.getEm();
         PersonEntity p = em.find(PersonEntity.class, id);
-        if (p == null) 
+        if (p == null) {
             throw new PersonNotFoundException();
+        }
         em.getTransaction().begin();
         em.remove(p);
         em.getTransaction().commit();
@@ -124,11 +130,9 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
         try {
             PersonEntity p = (PersonEntity) q.getSingleResult();
             return p;
-        }
-        catch(NoResultException ex) {
+        } catch (NoResultException ex) {
             throw new PersonNotFoundException();
-        }
-        finally {
+        } finally {
             em.close();
         }
     }
@@ -162,8 +166,7 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
         EntityManager em = emc.getEm();
         Query q = em.createQuery("SELECT COUNT(p.id) FROM PersonEntity p JOIN p.hobbies h WHERE h.name = :hobby");
         q.setParameter("hobby", hobby);
-        return((Long) q.getSingleResult()).intValue(); 
+        return ((Long) q.getSingleResult()).intValue();
     }
 
 }
-
