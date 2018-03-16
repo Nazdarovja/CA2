@@ -58,20 +58,6 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
         return object;
     }
 
-    // READ 
-    public InfoEntity rea(Long id) {
-        EntityManager em = emc.getEm();
-        try{
-            InfoEntity p = em.find(InfoEntity.class, id);
-            if (p == null) 
-                throw new PersonNotFoundException();
-            return p;
-        } finally {
-            em.close();
-        }
-    }
-
-    
     // READ
     @Override
     public PersonEntity read(Long id) {
@@ -111,20 +97,6 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
             throw new ValidationErrorException();
         object.setId(id);
         if(em.find(PersonEntity.class, id) == null) 
-            throw new PersonNotFoundException();
-        em.getTransaction().begin();
-        em.merge(object);
-        em.getTransaction().commit();
-        em.close();
-        return object;
-    }
-    // UPDATE 
-    public InfoEntity upd(Long id, PersonEntity object) {
-        EntityManager em = emc.getEm();
-        if(object.getFirstName().equals("") || object.getLastName().equals("") || object.getEmail().equals(""))
-            throw new ValidationErrorException();
-        object.setId(id);
-        if(em.find(InfoEntity.class, id) == null) 
             throw new PersonNotFoundException();
         em.getTransaction().begin();
         em.merge(object);

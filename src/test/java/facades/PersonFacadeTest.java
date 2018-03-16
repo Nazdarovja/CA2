@@ -16,13 +16,9 @@ import persistence.EntityManagerControl;
  * @author awha8
  */
 public class PersonFacadeTest {
-
-    EntityManagerFactory emf;
-    EntityManager em;
+    
     EntityManagerControl emc;
     PersonFacade pf;
-
-    EntityManagerFactory managerFactory;
     HashMap<String, String> persistenceMap = new HashMap<>();
 
     public PersonFacadeTest() {
@@ -30,10 +26,6 @@ public class PersonFacadeTest {
 
     @Before
     public void setUp() {
-//        emf = Persistence.createEntityManagerFactory("persistenceTEST");
-//        em = emf.createEntityManager();
-//        Persistence.generateSchema("persistence", null);
-
         persistenceMap.put("javax.persistence.jdbc.url", "jdbc:mysql://localhost:3306/ca2test");
         emc = new EntityManagerControl(persistenceMap);
         pf = new PersonFacade(emc);
@@ -72,7 +64,7 @@ public class PersonFacadeTest {
         Long id = 11L;
         PersonEntity newObject = new PersonEntity("NEW UPDATED", "PERSON", "NEWUPDATEDPERSON@email.dk");
         Long expResult = 11L;
-        InfoEntity result = pf.upd(id, newObject);
+        PersonEntity result = pf.update(id, newObject);
         assertEquals(expResult, result.getId());
     }
 
