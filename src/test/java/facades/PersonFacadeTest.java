@@ -77,15 +77,14 @@ public class PersonFacadeTest {
         assertEquals(expResult, result.getId());
     }
 
-    //@Test
+    @Test
     public void testGetPersonByPhoneNumber() {
         System.out.println("getPersonByPhoneNumber");
-        Long number = null;
-        PersonFacade instance = new PersonFacade();
-        PersonEntity expResult = null;
-        PersonEntity result = instance.getPersonByPhoneNumber(number);
+        Long number = 12345700L;
+        Long expResult = 12L;
+        PersonEntity person = pf.getPersonByPhoneNumber(number);
+        Long result = person.getId();
         assertEquals(expResult, result);
-        fail("The test case is a prototype.");
     }
 
     //@Test
