@@ -6,6 +6,7 @@
 package DTO;
 
 import entities.CompanyEntity;
+import entities.PhoneEntity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class CompanyEntityDTO implements JSONDTO<CompanyEntity> {
     private int cvr;
     private int numEmployees;
     private long marketValue;
+    private String email;
     private AddressEntityDTO address;
     private List<PhoneEntityDTO> phoneNumbers = new ArrayList();
 
@@ -30,6 +32,7 @@ public class CompanyEntityDTO implements JSONDTO<CompanyEntity> {
         this.address = new AddressEntityDTO(c.getAddress());
         this.numEmployees = c.getNumEmployees();
         this.marketValue = c.getMarketValue();
+        this.email = c.getEmail();
         c.getPhones().forEach((p) -> {
             phoneNumbers.add(new PhoneEntityDTO(p));
         });
@@ -37,7 +40,15 @@ public class CompanyEntityDTO implements JSONDTO<CompanyEntity> {
 
     @Override
     public CompanyEntity toInternal() {
-        return new CompanyEntity(name, description, cvr, numEmployees, marketValue, name);
+        CompanyEntity c = new CompanyEntity(name, description, cvr, numEmployees, marketValue, email);
+        
+        List<PhoneEntity> phones = new ArrayList();
+        phoneNumbers.forEach((pn) -> {
+            phones.add(pn.toInternal());
+        });
+        c.setPhones(phones);
+        
+        return c;
     }
 
 }

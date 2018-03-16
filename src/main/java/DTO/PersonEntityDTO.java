@@ -8,7 +8,6 @@ package DTO;
 import entities.HobbyEntity;
 import entities.PersonEntity;
 import entities.PhoneEntity;
-import facades.AddressFacade;
 import facades.HobbyFacade;
 import facades.PhoneFacade;
 import java.util.ArrayList;
