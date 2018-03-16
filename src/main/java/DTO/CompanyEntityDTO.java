@@ -42,6 +42,8 @@ public class CompanyEntityDTO implements JSONDTO<CompanyEntity> {
     public CompanyEntity toInternal() {
         CompanyEntity c = new CompanyEntity(name, description, cvr, numEmployees, marketValue, email);
         
+        c.setAddress(address.toInternal());
+        
         List<PhoneEntity> phones = new ArrayList();
         phoneNumbers.forEach((pn) -> {
             phones.add(pn.toInternal());

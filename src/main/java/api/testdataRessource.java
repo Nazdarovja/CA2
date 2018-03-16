@@ -49,10 +49,10 @@ public class testdataRessource {
 
 //    @Path("/infoentity/{samples}")
 //    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getInfoEntityTestData(@PathParam("samples") Integer samples) {
-        return generator.generateInfoEntity(samples);
-    }
+//    @Produces(MediaType.TEXT_PLAIN)
+//    public String getInfoEntityTestData(@PathParam("samples") Integer samples) {
+//        return generator.generateInfoEntity(samples);
+//    }
 
 //    @Path("/address/{samples}")
 //    @GET
@@ -85,7 +85,7 @@ public class testdataRessource {
 
         //company
         sql += generator.generateAddressEntity(samples);
-        sql += generator.generateInfoEntity(samples);
+        sql += generator.generateInfoEntity(samples, "CompanyEntity");
         sql += generator.generatePhoneEntity(samples);
         sql += generator.generateCompanyEntity(samples);
 
@@ -93,7 +93,7 @@ public class testdataRessource {
 
         //person
         sql += generator.generateAddressEntity(samples);
-        sql += generator.generateInfoEntity(samples);
+        sql += generator.generateInfoEntity(samples,"PersonEntity");
         sql += generator.generatePhoneEntity(samples);
         sql += generator.generatePersonEntity(samples);
         sql += generator.generateHobbyEntity();

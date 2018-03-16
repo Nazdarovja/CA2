@@ -1,22 +1,17 @@
-///*
-// * To change this license header, choose License Headers in Project Properties.
-// * To change this template file, choose Tools | Templates
-// * and open the template in the editor.
-// */
-//package facades;
-//
-//import entities.CompanyEntity;
-//import java.util.List;
-//import org.junit.Before;
-//import org.junit.Test;
-//import static org.junit.Assert.*;
-//
-///**
-// *
-// * @author Mellem
-// */
-//public class CompanyFacadeTest {
-//    
+package facades;
+
+import entities.CompanyEntity;
+import java.util.List;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+/**
+ *
+ * @author Mellem
+ */
+public class CompanyFacadeTest {
+    
 //    public CompanyFacadeTest() {
 //    }
 //    
@@ -27,6 +22,8 @@
 //    @Test
 //    public void testGetCompanyByPhoneNumber() {
 //        System.out.println("getCompanyByPhoneNumber");
+//    public void testGetCompanyByPhoneNumberJSON() {
+//        System.out.println("getCompanyByPhoneNumberJSON");
 //        Long phoneNumber = null;
 //        CompanyFacade instance = new CompanyFacade();
 //        CompanyEntity expResult = null;
@@ -158,3 +155,4 @@
 //    }
 //    
 //}
+}
