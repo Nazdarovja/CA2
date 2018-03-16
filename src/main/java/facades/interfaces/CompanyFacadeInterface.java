@@ -8,7 +8,7 @@ import java.util.List;
  */
 public interface CompanyFacadeInterface {
 
-    public CompanyEntity getCompanyByPhoneNumberJSON(Integer phoneNumber);
+    public CompanyEntity getCompanyByPhoneNumber(Long phoneNumber);
     public int getCompanyCountByZipCode(String zipcode);
     //return list of companies with a market value above given marketvalue
     public List<CompanyEntity> getCompaniesByMarketValueAbove(Long marketValue);

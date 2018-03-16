@@ -6,7 +6,7 @@
 package api;
 
 import DTO.JSONDTO;
-import DTO.PersonCountDTO;
+import DTO.CountDTO;
 import DTO.PersonEntityDTO;
 import entities.PersonEntity;
 import facades.DTOFacade;
@@ -60,16 +60,16 @@ public class PersonResource {
     public String getAllPersons() {
         List<PersonEntity> persons = pf.readAll();
         List<JSONDTO> personsDTO = new ArrayList();
-        for (PersonEntity personEntity : persons) {
+        persons.forEach((personEntity) -> {
             personsDTO.add(new PersonEntityDTO(personEntity));
-        }
+        });
         return dto.DTOListToJson(personsDTO);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public String getPerson(@PathParam("id")Long id) {
+    public String getPerson(@PathParam("id") Long id) {
         PersonEntity person = pf.read(id);
         return dto.DTOtoJson(new PersonEntityDTO(person));
     }
@@ -78,7 +78,7 @@ public class PersonResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public String updatePerson(@PathParam("id")Long id, String message) {
+    public String updatePerson(@PathParam("id") Long id, String message) {
         PersonEntity p = dto.fromJson(message, PersonEntityDTO.class);
         p = pf.update(id, p);
         return dto.DTOtoJson(new PersonEntityDTO(p));
@@ -88,7 +88,7 @@ public class PersonResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public String deletePerson(@PathParam("id")Long id) {
+    public String deletePerson(@PathParam("id") Long id) {
         //Deletes and returns the deleted person as JSON (for display or other reasons)
         PersonEntity p = pf.delete(id);
         return dto.DTOtoJson(new PersonEntityDTO(p));
@@ -97,7 +97,7 @@ public class PersonResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/phonenumber/{number}")
-    public String getPersonByPhonenumber(@PathParam("number")Long number) {
+    public String getPersonByPhonenumber(@PathParam("number") Long number) {
         PersonEntity p = pf.getPersonByPhoneNumber(number);
         return dto.DTOtoJson(new PersonEntityDTO(p));
     }
@@ -105,7 +105,7 @@ public class PersonResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/hobby/{hobby}")
-    public String getPersonListByHobby(@PathParam("hobby")String hobby) {
+    public String getPersonListByHobby(@PathParam("hobby") String hobby) {
         List<PersonEntity> persons = pf.getAllPersonsByHobby(hobby);
         List<JSONDTO> personsDTO = new ArrayList();
         for (PersonEntity person : persons) {
@@ -117,7 +117,7 @@ public class PersonResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/city/{city}")
-    public String getPersonListByCity(@PathParam("city")String city) {
+    public String getPersonListByCity(@PathParam("city") String city) {
         List<PersonEntity> persons = pf.getAllPersonsByCity(city);
         List<JSONDTO> personsDTO = new ArrayList();
         for (PersonEntity person : persons) {
@@ -129,7 +129,7 @@ public class PersonResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/street/{street}")
-    public String getPersonListByStreet(@PathParam("street")String street) {
+    public String getPersonListByStreet(@PathParam("street") String street) {
         List<PersonEntity> persons = pf.getAllPersonsByStreet(street);
         List<JSONDTO> personsDTO = new ArrayList();
         for (PersonEntity person : persons) {
@@ -141,9 +141,9 @@ public class PersonResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/countbyhobby/{hobby}")
-    public String getPersonCountByHobby(@PathParam("hobby")String hobby){
+    public String getPersonCountByHobby(@PathParam("hobby") String hobby) {
         Integer count = pf.getPersonCountByHobby(hobby);
-        return dto.DTOtoJson(new PersonCountDTO(count));
+        return dto.DTOtoJson(new CountDTO(count));
     }
-    
+
 }

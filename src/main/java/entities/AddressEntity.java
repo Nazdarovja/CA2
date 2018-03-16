@@ -40,6 +40,10 @@ public class AddressEntity implements Serializable {
     public AddressEntity() {
     }
 
+    public CityInfoEntity getCityInfo() {
+        return cityInfo;
+    }
+
     public AddressEntity(String street, String additionalInfo) {
         this.street = street;
         this.additionalInfo = additionalInfo;

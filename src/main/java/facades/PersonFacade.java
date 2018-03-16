@@ -59,28 +59,15 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
     }
 
     // READ
-    public InfoEntity rea(Long id) {
-        EntityManager em = emc.getEm();
-        try{
-            InfoEntity p = em.find(InfoEntity.class, id);
-            if (p == null) 
-                throw new PersonNotFoundException();
-            return p;
-        } finally {
-            em.close();
-        }
-    }
-
-    
-    // READ
     @Override
     public PersonEntity read(Long id) {
         EntityManager em = emc.getEm();
         try{
-            PersonEntity p = em.find(PersonEntity.class, id);
-            if (p == null) 
+            InfoEntity p = em.find(InfoEntity.class, id);
+            System.out.println(p);
+            if (p == null || !(p instanceof PersonEntity)) 
                 throw new PersonNotFoundException();
-            return p;
+            return (PersonEntity)p;
         } finally {
             em.close();
         }
@@ -163,7 +150,7 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
             em.close();
         }
     }
-
+    
     @Override
     public List<PersonEntity> getAllPersonsByHobby(String hobby) {
         EntityManager em = emc.getEm();
