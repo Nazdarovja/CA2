@@ -19,7 +19,7 @@ public class HobbyEntityDTO implements JSONDTO<HobbyEntity> {
     public HobbyEntityDTO(HobbyEntity he) {
         this.name = he.getName();
         this.description = he.getDescription();
-    }
+    } 
 
     public String getName() {
         return name;
@@ -30,5 +30,4 @@ public class HobbyEntityDTO implements JSONDTO<HobbyEntity> {
     public HobbyEntity toInternal() {
         return new HobbyEntity(name, description);
     }
-
 }

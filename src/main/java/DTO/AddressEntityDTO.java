@@ -34,5 +34,4 @@ public class AddressEntityDTO implements JSONDTO<AddressEntity> {
     public AddressEntity toInternal() {
         return new AddressEntity(id, street, additionalInfo, cityInfo.toInternal());
     }
-
 }

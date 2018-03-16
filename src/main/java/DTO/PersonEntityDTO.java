@@ -52,12 +52,12 @@ public class PersonEntityDTO implements JSONDTO<PersonEntity> {
         //TOFIX in doubt if these are the right object representations, as they lack the bidirectional relationships.
         p.setAddress(address.toInternal());
 
-//        List<HobbyEntity> hobbies = new ArrayList();
-//        hobbyDTOs.forEach((h) -> {
-//            hobbies.add(hf.read(h.getName()));
-//        });
-//        
-//        p.setHobbies(hobbies);
+        List<HobbyEntity> hobbies = new ArrayList();
+        hobbyDTOs.forEach((h) -> {
+            hobbies.add(hf.read(h.getName()));
+        });
+        
+        p.setHobbies(hobbies);
 //        List<PhoneEntity> phones = new ArrayList();
 //        phoneNumbers.forEach((pn) -> {
 //            PhoneEntity temp = pf.read(pn.getNumber());
