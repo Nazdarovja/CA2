@@ -1,11 +1,8 @@
 package facades;
 
-import entities.InfoEntity;
 import entities.PersonEntity;
 import java.util.HashMap;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -32,7 +29,7 @@ public class PersonFacadeTest {
 
     }
 
-    @Test
+//    @Test
     public void testRead_Long() {
         System.out.println("read");
         Long id = 13L;

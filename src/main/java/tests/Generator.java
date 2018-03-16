@@ -32,7 +32,7 @@ public class Generator {
     //RANDOM TEST DATA// 
     ////////////////////
     //ADDRESS ENTITY
-    String[] street = {"Algade 2", "Raadhuspladsen 8", "Frederiksberg Alle 52a", "Roskildevej 13", "Ballerup Byvej 1"};
+    String[] street = {"Algade ", "Raadhuspladsen ", "Frederiksberg Alle ", "Roskildevej ", "Ballerup Byvej "};
     String[] additionalInfo = {"Building 1", "Building 2", "Building 3", "Building 4", "Building 5"};
     //CITY ENTITY ?
 
@@ -167,10 +167,15 @@ public class Generator {
 
     public String generateAddressEntity(int samplesToGenerate) {
         String sqlList = "";
+                int counterID = 1;
+        if (companyDataGenerated) {
+            counterID += samplesToGenerate;
+        }
         while (samplesToGenerate > 0) {
-            AddressEntity temp = tdf.createAddressEntity(getRndStringValue(street), getRndStringValue(additionalInfo));
+            AddressEntity temp = tdf.createAddressEntity(getRndStringValue(street)+counterID, getRndStringValue(additionalInfo));
             sqlList += sqlifyAddressEntity(temp);
             samplesToGenerate--;
+            counterID++;
         }
         return sqlList;
     }
