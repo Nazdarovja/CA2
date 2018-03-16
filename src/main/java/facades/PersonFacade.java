@@ -5,6 +5,7 @@
  */
 package facades;
 
+import entities.InfoEntity;
 import facades.interfaces.PersonFacadeInterface;
 import entities.PersonEntity;
 import entities.PhoneEntity;
@@ -25,7 +26,15 @@ import javax.persistence.Query;
  */
 public class PersonFacade implements PersonFacadeInterface, CRUDInterface<PersonEntity> {
 
-    EntityManagerControl emc = new EntityManagerControl();
+    EntityManagerControl emc;
+
+    public PersonFacade() {
+        emc = new EntityManagerControl();
+    }
+
+    public PersonFacade(EntityManagerControl emc) {
+        this.emc = emc;
+    }
 
     // ------- CRUD -------- CRUD -------- CRUD -------- CRUD --------
     // CREATE
@@ -52,13 +61,15 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
     @Override
     public PersonEntity read(Long id) {
         EntityManager em = emc.getEm();
-        PersonEntity p = em.find(PersonEntity.class, id);
-        if (p == null) {
-            throw new PersonNotFoundException();
+        try {
+            InfoEntity p = em.find(InfoEntity.class, id);
+            if (p == null || !(p instanceof PersonEntity)) {
+                throw new PersonNotFoundException();
+            }
+            return (PersonEntity) p;
+        } finally {
+            em.close();
         }
-        System.out.println(p.getPhones());
-        em.close();
-        return p;
     }
 
     // READ
@@ -73,6 +84,9 @@ public class PersonFacade implements PersonFacadeInterface, CRUDInterface<Person
         EntityManager em = emc.getEm();
         Query q = em.createQuery("SELECT p FROM PersonEntity p");
         List<PersonEntity> list = (List<PersonEntity>) q.getResultList();
+        for (PersonEntity personEntity : list) {
+            System.out.println(personEntity);
+        }
         em.close();
         return list;
     }
