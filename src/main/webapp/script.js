@@ -190,5 +190,5 @@ function getTableSkeletForCrudResult() {
 
 function getTableSkeletForCrudResultCompany() {
     return "<thead><tr><th>Name</th><th>Description</th><th>CVR</th>\n\
-            <th>NumEmployees</th><th>MarketValue</th><th>Address</th><th>Phones</th></tr></thead><tbody>";
+            <th>NumEmployees</th><th>MarketValue</th><th>Email</th><th>Address</th><th>Phones</th></tr></thead><tbody>";
 }
