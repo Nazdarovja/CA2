@@ -100,9 +100,10 @@ function createPerson() {
     
     let data = {
         headers: myHeaders,
-        body: objectBody,
+        body: JSON.stringify(objectBody),
         method: "POST"
     };
+    
 
     fetch("http://localhost:8084/CA2/api/person", data)
             .then(resp => resp.json)
