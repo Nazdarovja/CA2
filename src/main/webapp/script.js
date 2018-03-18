@@ -55,21 +55,28 @@ function updatePerson() {
     myHeaders.append('Content-Type', "application/json");
     myHeaders.append('Accept', "application/json");
 
-    let data = {
-        headers: myHeaders,
-        body: {
+    let objectBody = {
             firstName: fName,
             lastName: lName,
             email: mail,
-            address: addr,
-            zipcode: zip
-        },
-        method: "put"
+            address: {street: addr, additionalInfo: "additionalInf",
+                cityInfo: {zipCode: zip
+                }},
+            phoneNumbers: [
+            ],
+            hobbyDTOs: [
+            ]
+        };
+    
+    let data = {
+        headers: myHeaders,
+        body: JSON.stringify(objectBody),
+        method: "PUT"
     };
 
-    fetch("http://localhost:8084/CA2/api/person/" + pId, data)
-            .then(resp => resp.json)
-            .then(person => convertPersonToTable(person));
+    fetch("http://localhost:8084/CA2/api/person/"+pId, data)
+            .then(resp => resp.json())
+            .then(person => {console.log(person);convertPersonToTable(person);});
 }
 
 function createPerson() {
