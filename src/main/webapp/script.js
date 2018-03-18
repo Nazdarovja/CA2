@@ -145,8 +145,12 @@ function getCompaniesWithMoreThanXXEmployees() {
 
 function convertPersonToTable(person) {
     let html = "<table>" + getTableSkeletForCrudResult() + "<tr>";
-    for (var propt in person)
-        html += "<td>" + person[propt] + "</td>";
+    for (var propt in person) {
+        if(person[propt] instanceof Object)
+            html += "<td>" + JSON.stringify(person[propt]) + "</td>";
+        else
+            html += "<td>" + person[propt] + "</td>";
+    }
     html += "</tr></tbody></table>";
     document.getElementById("result").innerHTML = html;
 }
