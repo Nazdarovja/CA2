@@ -78,29 +78,36 @@ function createPerson() {
     let mail = document.getElementById("emailCreate").value;
     let addr = document.getElementById("addressCreate").value;
     let zip = document.getElementById("zipcodeCreate").value;
+    let additionalInf = document.getElementById("additionalInfoCreate").value;
 
     let myHeaders = new Headers();
 
     myHeaders.append('Content-Type', "application/json");
     myHeaders.append('Accept', "application/json");
 
-    let data = {
-        headers: myHeaders,
-        body: {
+    let objectBody = {
             firstName: fName,
             lastName: lName,
             email: mail,
-            address: {street: addr, additionalInfo: additionalInfo,
-                cityInfo: {zipcode: zip
-                }
-            }
-        },
-        method: "post"
+            address: {street: addr, additionalInfo: additionalInf,
+                cityInfo: {zipCode: zip
+                }},
+            phoneNumbers: [
+            ],
+            hobbyDTOs: [
+            ]
+        };
+    
+    let data = {
+        headers: myHeaders,
+        body: objectBody,
+        method: "POST"
     };
 
     fetch("http://localhost:8084/CA2/api/person", data)
             .then(resp => resp.json)
-            .then(person => convertPersonToTable(person));
+            .then(person => convertPersonToTable(person))
+            .catch(error => console.log(error.message));
 }
 
 function getPersonsWithGivenHobby() {
@@ -115,7 +122,7 @@ function getPersonsFromGivenCity() {
     let cityList = document.getElementById("cities");
     let city = cityList.options[cityList.selectedIndex].value;
 
-    fetch("http://localhost:8084/CA2/api/person/hobby/" + city)
+    fetch("http://localhost:8084/CA2/api/person/city/" + city)
             .then(resp => resp.json())
             .then(persons => convertArrayOfPersonsToTable(persons));
 }
@@ -137,14 +144,22 @@ function convertPersonToTable(person) {
 }
 
 function convertArrayOfPersonsToTable(persons) {
-    let html = "<table>" + getTableSkeletForCrudResult();
-    for (var p in persons) {
+    var html = "<table>" + getTableSkeletForCrudResult();
+    for (var key in persons) {
         html += "<tr>";
-        for (var propt in p) {
-            html += "<td>" + p[propt] + "</td>";
+        var obj = persons[key];
+        for (var propt in obj) {
+            if(obj[propt] instanceof Object) {
+                let object = JSON.stringify(obj[propt]);
+                html += "<td>" + object + "</td>";
+            }
+            else {
+                html += "<td>" + obj[propt] + "</td>";
+            }
         }
-        html += "</tr></tbody></table>";
+        html += "</tr>";
     }
+        html += "</tbody></table>";
     document.getElementById("result").innerHTML = html;
 }
 
@@ -163,7 +178,7 @@ function convertArrayOfCompaniesToTable(companies) {
 
 function getTableSkeletForCrudResult() {
     return "<thead><tr><th>Firstname</th><th>Lastname</th><th>Email</th>\n\
-            <th>Address</th><th>Hobbies</th><th>Phones</th></tr></thead><tbody>";
+            <th>Address</th><th>Phones</th><th>Hobbies</th></tr></thead><tbody>";
 }
 
 function getTableSkeletForCrudResultCompany() {
