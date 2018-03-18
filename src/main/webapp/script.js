@@ -149,15 +149,22 @@ function convertArrayOfPersonsToTable(persons) {
 }
 
 function convertArrayOfCompaniesToTable(companies) {
-    console.log(companies);
-    let html = "<table>" + getTableSkeletForCrudResultCompany()();
-    for (var c in companies) {
+    var html = "<table>" + getTableSkeletForCrudResultCompany();
+    for (var key in companies) {
         html += "<tr>";
-        for (var propt in c) {
-            html += "<td>" + c[propt] + "</td>";
+        var obj = companies[key];
+        for (var propt in obj) {
+            if(obj[propt] instanceof Object) {
+                let object = JSON.stringify(obj[propt]);
+                html += "<td>" + object + "</td>";
+            }
+            else {
+                html += "<td>" + obj[propt] + "</td>";
+            }
         }
-        html += "</tr></tbody></table>";
+        html += "</tr>";
     }
+        html += "</tbody></table>";
     document.getElementById("result").innerHTML = html;
 }
 
