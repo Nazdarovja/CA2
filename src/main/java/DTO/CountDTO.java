@@ -19,6 +19,7 @@ public class CountDTO implements JSONDTO<Object> {
 
     @Override
     public Object toInternal() {
+//        return new CountDTO(count);
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

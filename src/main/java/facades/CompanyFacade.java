@@ -152,13 +152,20 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
         //TODO ErrorHandling
     }
 
+//    @Override
+    public List<CompanyEntity> getCompanyCountByNumEmployeesBelowTEST(Integer numEmployees) {
+        EntityManager em = emc.getEm();
+//        Query query = em.createQuery("SELECT count(c.id) from CompanyEntity c WHERE c.numEmployees < :numEmployees");
+        Query query = em.createQuery("SELECT c from CompanyEntity c WHERE c.numEmployees > :numEmployees");
+        query.setParameter("numEmployees", numEmployees);
+//        return (int) query.getSingleResult();
+        return (List<CompanyEntity>) query.getResultList();
+        //TODO ErrorHandling
+    }
+
     @Override
     public int getCompanyCountByNumEmployeesBelow(Integer numEmployees) {
-        EntityManager em = emc.getEm();
-        Query query = em.createQuery("SELECT count(c.id) from CompanyEntity c WHERE c.numEmployees < :numEmployees");
-        query.setParameter("numEmployees", numEmployees);
-        return (int) query.getSingleResult();
-        //TODO ErrorHandling
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
