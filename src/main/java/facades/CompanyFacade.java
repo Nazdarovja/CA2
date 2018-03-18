@@ -26,8 +26,17 @@ import persistence.EntityManagerControl;
  */
 public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<CompanyEntity> {
 
-    EntityManagerControl emc = new EntityManagerControl();
     DTOFacade dto = new DTOFacade();
+    
+    EntityManagerControl emc;
+
+    public CompanyFacade() {
+        emc = new EntityManagerControl();
+    }
+
+    public CompanyFacade(EntityManagerControl emc) {
+        this.emc = emc;
+    }
 
     // ------- CRUD -------- CRUD -------- CRUD -------- CRUD --------
     // CREATE
@@ -126,7 +135,7 @@ public class CompanyFacade implements CompanyFacadeInterface, CRUDInterface<Comp
     @Override
     public CompanyEntity getCompanyByPhoneNumber(Long phoneNumber) {
         EntityManager em = emc.getEm();
-        Query query = em.createQuery("SELECT p from PersonEntity p JOIN p.phones ph WHERE ph.number = :number");
+        Query query = em.createQuery("SELECT p from CompanyEntity p JOIN p.phones ph WHERE ph.number = :number");
         query.setParameter("number", phoneNumber);
         return (CompanyEntity) query.getSingleResult();
         //TODO ErrorHandling
