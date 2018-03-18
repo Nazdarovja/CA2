@@ -90,13 +90,15 @@ function createPerson() {
             firstName: fName,
             lastName: lName,
             email: mail,
-            address: addr,
-            zipcode: zip
+            address: {street: addr, additionalInfo: additionalInfo,
+                cityInfo: {zipcode: zip
+                }
+            }
         },
         method: "post"
     };
 
-    fetch("http://localhost:8084/CA2/api/person/", data)
+    fetch("http://localhost:8084/CA2/api/person", data)
             .then(resp => resp.json)
             .then(person => convertPersonToTable(person));
 }
@@ -105,7 +107,7 @@ function getPersonsWithGivenHobby() {
     let hobbyList = document.getElementById("hobbies");
     let hobby = hobbyList.options[hobbyList.selectedIndex].value;
     fetch("http://localhost:8084/CA2/api/person/hobby/" + hobby)
-            .then(resp => resp.json()) 
+            .then(resp => resp.json())
             .then(persons => convertArrayOfPersonsToTable(persons));
 }
 
