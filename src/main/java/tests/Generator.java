@@ -119,7 +119,7 @@ public class Generator {
     }
 
     private String sqlifyPersonEntityHobbyEntity(String hobbyID, int personID) {
-        String first = "INSERT INTO personentity_hobbyentity (hobbies_NAME, persons_ID) VALUES ('";
+        String first = "INSERT INTO PERSONENTITY_HOBBYENTITY (hobbies_NAME, persons_ID) VALUES ('";
         String second = hobbyID + "', '" + personID + "');\n";
         return first + second;
     }
